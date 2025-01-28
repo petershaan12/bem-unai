@@ -2,57 +2,39 @@ import { Link } from "@remix-run/react";
 
 export function Navbar() {
     return (
-        <div className="navbar bg-base-100 px-16 fixed top-0 z-20">
-            <div className="navbar-start">
-                <div className="dropdown">
-                    <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M4 6h16M4 12h8m-8 6h16" />
-                        </svg>
-                    </div>
-                    <ul
-                        tabIndex={0}
-                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                        <li><a>Mentri</a></li>
-                        <li>
-                            <a>Audit</a>
-                            <ul className="p-2">
-                                <li><a>Submenu 1</a></li>
-                                <li><a>Submenu 2</a></li>
-                            </ul>
-                        </li>
-                        <li><a>Informasi Terkini</a></li>
-                    </ul>
-                </div>
-                <Link to="/" className="font-semibold text-xl">BEM Unai</Link>
-            </div>
-            <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
-                    <li><a>Mentri</a></li>
-                    <li>
-                        <details>
-                            <summary>Audit</summary>
-                            <ul className="p-2">
-                                <li><a>Submenu 1</a></li>
-                                <li><a>Submenu 2</a></li>
-                            </ul>
-                        </details>
-                    </li>
-                    <li><Link to="/info">Informasi</Link></li>
-                </ul>
-            </div>
-            <div className="navbar-end">
-                <a className="btn">Button</a>
-            </div>
+      <div className="navbar bg-primary px-5 md:px-20 fixed top-0 z-20 md:h-20 shadow-lg">
+        <div className="flex-1">
+          <Link
+            to="/"
+            className="font-semibold text-2xl flex items-center gap-5"
+          >
+            <img src="/bem-logo.svg" alt="Logo" className="h-10 w-10" />
+            <span className="hidden md:block">BEM Unai</span>
+          </Link>
         </div>
-    )
+        <div className="flex-none">
+          <ul className="menu menu-horizontal px-1">
+            <li>
+              <a>Pemerintahan</a>
+            </li>
+            <li>
+              <details>
+                <summary>Audit</summary>
+                <ul className="p-2">
+                  <li>
+                    <a>Submenu 1</a>
+                  </li>
+                  <li>
+                    <a>Submenu 2</a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+            <li>
+              <Link to="/info">Informasi</Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    );
 }

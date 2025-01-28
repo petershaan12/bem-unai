@@ -17,35 +17,40 @@ export default {
         ],
       },
       animation: {
-        marquee: 'marquee 25s linear infinite',
-        marquee2: 'marquee2 25s linear infinite',
-        marquee3: 'marquee3 25s linear infinite',
-        marquee4: 'marquee4 25s linear infinite',
+        marquee: "marquee 60s linear infinite",
+        marquee2: "marquee2 60s linear infinite",
+        marquee3: "marquee3 60s linear infinite",
+        marquee4: "marquee4 60s linear infinite",
       },
       keyframes: {
         marquee: {
-          '0%': { transform: 'translateX(0%)' },
-          '100%': { transform: 'translateX(-100%)' },
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-100%)" },
         },
         marquee2: {
-          '0%': { transform: 'translateX(100%)' },
-          '100%': { transform: 'translateX(0%)' },
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(0%)" },
         },
         marquee3: {
-          '0%': { transform: 'translateX(-100%)' },
-          '100%': { transform: 'translateX(0%)' },
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(0%)" },
         },
         marquee4: {
-          '0%': { transform: 'translateX(0%)' },
-          '100%': { transform: 'translateX(100%)' },
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(100%)" },
         },
       },
     },
   },
-  plugins: [
-    require('daisyui'),
-  ],
+  plugins: [require("daisyui")],
   daisyui: {
-    themes: ["light", "dark", "cupcake"],
+    themes: [
+      {
+        mytheme: {
+          primary: "#151A1E",
+          secondary: "#CECA83",
+        },
+      },
+    ],
   },
 } satisfies Config;

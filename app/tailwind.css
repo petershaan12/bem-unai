@@ -2,3 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+.font-bigNoddle {
+  font-family: "Big-noodle-titling", sans-serif;
+}
+
+@font-face {
+  font-family: "Big-noodle-titling";
+  src: url("/big_noodle_titling.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.judul {
+  font-size: 8.88rem;
+  line-height: 0.8 ;
+}
+
+@media screen and (max-width: 768px) {
+  .judul {
+    font-size: 5rem;
+    line-height: 0.8;
+  }
+}
+
+.bg-logo {
+    background-image: url('/bem-logo-transparent.png'); 
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+  }
