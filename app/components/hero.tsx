@@ -23,7 +23,7 @@ export function Hero() {
             </span>
           </p>
         </div>
-        <div className="mt-10 md:mt-20">
+        <div className=" md:mt-20">
           <img src="/home.png" alt="Hero" className="" />
         </div>
       </div>

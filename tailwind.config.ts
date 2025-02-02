@@ -49,6 +49,7 @@ export default {
         mytheme: {
           primary: "#151A1E",
           secondary: "#CECA83",
+          third: "#9C8C38",
         },
       },
     ],
