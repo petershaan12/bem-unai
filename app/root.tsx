@@ -1,15 +1,18 @@
 import {
+  json,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
-
 import "./tailwind.css";
 import { Navbar } from "./components/navbar";
 import { Footer } from "./components/footer";
+import { authenticator } from "./utils/auth.server";
+import { sessionStorage } from "./utils/session.server";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -24,7 +27,14 @@ export const links: LinksFunction = () => [
   },
 ];
 
+export async function loader({ request }: { request: Request }) {
+  let session = await sessionStorage.getSession(request.headers.get("cookie"));
+  let user = session.get("user");
+  return json({ user: user || null });
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const { user } = useLoaderData<{ user: any }>() || { user: null };
   return (
     <html lang="en">
       <head>
@@ -34,7 +44,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="bg-primary text-white">
-        <Navbar />
+        <Navbar user={user} />
         {children}
         <ScrollRestoration />
         <Footer />

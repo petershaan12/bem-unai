@@ -1,6 +1,7 @@
 import { json, Link, LoaderFunctionArgs } from "react-router-dom";
 import { useLoaderData } from "@remix-run/react";
 import dataBem from "../../data_bem.json";
+import { MetaFunction } from "@remix-run/node";
 
 interface Data {
   title: string;
@@ -11,18 +12,22 @@ interface Data {
   family?: string[];
 }
 
+export const meta: MetaFunction = (args) => {
+  const data = args.data as Data;
+
+  return [
+    { title: `${data.title} | BEM UNAI` },
+    { name: "description", content: data.description },
+  ];
+};
+
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const nama = params.nama;
-  console.log("Nama:", nama);
   const data = dataBem.find((entry) => entry.abbreviation === nama);
 
-  console.log("Data ditemukan:", data);
-
   if (!data || data === undefined) {
-    return json(
-      { title: "Data tidak ditemukan", description: "Data tidak ditemukan" },
-      { status: 404 }
-    );
+    // throw error 
+    throw new Error("Data tidak ditemukan");
   }
 
   return json(data);

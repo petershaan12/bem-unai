@@ -41,9 +41,15 @@ export function Footer() {
         </p>
 
         <div className="flex gap-5 order-1 md:order-2 mb-5 md:mb-0">
-          <AiOutlineInstagram className="w-6 h-6 md:w-8 md:h-8" />
-          <AiFillYoutube className="w-6 h-6 md:w-8 md:h-8" />
-          <AiOutlineTikTok className="w-6 h-6 md:w-8 md:h-8" />
+          <a href="https://www.instagram.com/bemunai" target="_blank" rel="noopener noreferrer">
+            <AiOutlineInstagram className="w-6 h-6 md:w-8 md:h-8" />
+          </a>
+          <a href="https://www.youtube.com/@bemunai" target="_blank" rel="noopener noreferrer">
+            <AiFillYoutube className="w-6 h-6 md:w-8 md:h-8" />
+          </a>
+          <a href="https://www.tiktok.com/@bemunai" target="_blank" rel="noopener noreferrer">
+            <AiOutlineTikTok className="w-6 h-6 md:w-8 md:h-8" />
+          </a>
         </div>
       </div>
     </footer>
