@@ -5,7 +5,7 @@ import { sessionStorage } from "~/utils/session.server";
 import { User } from "~/utils/types.server";
 
 export default function Create() {
-    const user = useLoaderData<User>();
+    // const user = useLoaderData<User>();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [image, setImage] = useState<File | null>(null);
