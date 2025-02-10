@@ -120,14 +120,14 @@ export function Navbar({ user, dataBem }: NavbarProps) {
           </li>
           {user && (
             <>
+              <li>
+                <Link href="/kelola-pemerintahan">Kelola Pemerintahan</Link>
+              </li>
             <li>
                 <Link href="/kelola-portal">Kelola Portal</Link>
               </li>
               <li>
-                <Link href="/kelola-pemerintahan">Kelola Pemerintahan</Link>
-              </li>
-              <li>
-                <Link href="/buat-berita">Buat Berita</Link>
+                <Link href="/kelola-informasi">Kelola Informasi</Link>
               </li>
               <li>
                 <Link href="/profile" className="flex items-center gap-4">

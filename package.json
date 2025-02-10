@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.3.0",
+    "html-react-parser": "^5.2.2",
     "jose": "^5.9.6",
     "next": "15.1.6",
     "react": "^19.0.0",

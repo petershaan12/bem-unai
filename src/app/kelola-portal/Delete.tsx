@@ -2,11 +2,11 @@
 import { deletePortal } from "../lib/portal";
 import { toast } from "react-toastify";
 
-interface DeletePortalProps {
+interface DeleteProps {
     id: string;
 }
 
-export default function DeletePortal({ id }: DeletePortalProps) {
+export default function Delete({ id }: DeleteProps) {
     const handleDelete = async () => {
         toast.promise(
             deletePortal(id),

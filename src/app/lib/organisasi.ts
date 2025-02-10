@@ -168,6 +168,20 @@ const saveOrganisasi = async (prevState: any, formData: FormData) => {
     } 
 }
 
+const deleteOrganisasi = async (id: string) => {
+    try {
+        await prisma.organisasi.delete({
+            where: {
+                id: id,
+            },
+        });
+        revalidatePath("/kelola-pemerintahan");
+    } catch (error) {
+        console.error("Error deleting organization:", error);
+        throw new Error("Could not delete organization");
+    }
+}
 
 
-export { getAllOrganisasi, getOrganisasiByAbbreviation, saveOrganisasi, getFamilyOrganisasi, getChildOrganisasi };
+
+export { getAllOrganisasi, getOrganisasiByAbbreviation, saveOrganisasi, getFamilyOrganisasi, getChildOrganisasi, deleteOrganisasi };

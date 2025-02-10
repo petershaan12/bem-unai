@@ -1,6 +1,7 @@
 import { getAllOrganisasi } from "@/app/lib/organisasi";
 import Image from "next/image";
 import Link from "next/link";
+import Delete from "./Delete";
 
 interface OrganisasiProps {
     id: string;
@@ -66,6 +67,7 @@ export default async function page() {
                                         <td>
                                             <Link href={`/pemerintahan/${organisasi.abbreviation}`} className="text-xs hover:underline">details</Link>
                                             <Link href={`/kelola-pemerintahan/edit/${organisasi.abbreviation}`} className="ml-3 text-xs hover:underline">edit</Link>
+                                            <Delete id={organisasi.id} />
                                         </td>
                                     </tr>
                                 ))

@@ -30,14 +30,18 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   title     String
+  slug      String   @unique
   content   String
   bannerImage String?
-  orgnizer  String?
+  organisasiId String @db.ObjectId
+  organisasi   Organisasi @relation(fields: [organisasiId], references: [id])
+  date     DateTime 
+  views    Int      @default(0)
   published Boolean  @default(false)
   authorId  String   @db.ObjectId
   author    User     @relation(fields: [authorId], references: [id])
 }
-  a``
+
 model Organisasi {
   id          String           @id @default(auto()) @map("_id") @db.ObjectId
   createdAt   DateTime         @default(now())
@@ -50,6 +54,7 @@ model Organisasi {
   familyId    String?          @db.ObjectId
   family      Organisasi? @relation("FamilyRelation", fields: [familyId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   children    Organisasi[] @relation("FamilyRelation")
+  posts       Post[]
 }
 
 model Portal {

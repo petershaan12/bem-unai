@@ -1,19 +1,40 @@
 "use client"
 
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 import "react-quill-new/dist/quill.snow.css";
-import dataBem from "../../../data_bem.json";
 import { createPosts } from "@/app/lib/pots";
+import { getAllOrganisasi } from "../lib/organisasi";
+import { toast } from "react-toastify";
 
-export default function CreateForm() {
+
+interface Organisasi {
+    id: string;
+    title: string;
+    abbreviation: string;
+    type: string;
+    image: string | null;
+    description: string | null;
+}
+
+export default function Form(prevData?: any) {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [error, setError] = useState("");
     const [image, setImage] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [selectedOrganizer, setSelectedOrganizer] = useState("");
+    const [dataBem, setDataBem] = useState<Organisasi[]>([]);
+    const [date, setDate] = useState("");
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await getAllOrganisasi();
+            setDataBem(response);
+        };
+        fetchData();
+    }, []);
 
     const handleOrganizerChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedOrganizer(event.target.value);
@@ -42,7 +63,8 @@ export default function CreateForm() {
         const formData = new FormData();
         formData.append("title", title);
         formData.append("content", content);
-        formData.append("organizer", selectedOrganizer);
+        formData.append("organisasiId", selectedOrganizer);
+        formData.append("date", date);
 
         if (image) {
             formData.append("image", image);
@@ -59,16 +81,14 @@ export default function CreateForm() {
 
         const result = await createPosts(formData);
 
-        if (!result) {
-            setError("Anda harus login terlebih dahulu");
-            return;
-        }
-
-        if (result.errors) {
+        if (result && result.errors) {
             setError(result.errors.message);
-            console.error(result.errors.message);
         } else {
-            alert("Berhasil membuat berita!");
+            toast.success(result?.success.message, {
+                position: "top-right",
+                autoClose: 3000,
+                theme: "dark",
+            });
             setTitle("");
             setContent("");
             setImage(null);
@@ -94,6 +114,19 @@ export default function CreateForm() {
             </div>
             <div className="mb-4">
                 <label className="label">
+                    <span className="text-base label-text">Tanggal Acara</span>
+                </label>
+                <input
+                    type="datetime-local"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    placeholder="Masukkan Tanggal"
+                    className="w-full text-black input input-bordered input-secondary"
+                    required
+                />
+            </div>
+            <div className="mb-4">
+                <label className="label">
                     <span className="text-base label-text">Konten</span>
                 </label>
                 <ReactQuill
@@ -110,7 +143,7 @@ export default function CreateForm() {
                         ],
                     }}
                     placeholder="Masukkan Konten"
-                    className="w-full bg-white text-black rounded-xl border-none h-32"
+                    className="w-full bg-white text-black rounded-xl border-none"
                 />
             </div>
             <div className="mb-4">
@@ -125,7 +158,7 @@ export default function CreateForm() {
                 >
                     <option value="" disabled>Pilih Organizer</option>
                     {dataBem.map((organizer) => (
-                        <option key={organizer.abbreviation} value={organizer.abbreviation}>
+                        <option key={organizer.abbreviation} value={organizer.id}>
                             {organizer.title}
                         </option>
                     ))}

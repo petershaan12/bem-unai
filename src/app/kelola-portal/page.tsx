@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getAllPortal } from "../lib/portal";
-import DeletePortal from "./DeletePortal";
+import Delete from "./Delete";
 
 interface PortalProps {
     id: string;
@@ -49,7 +49,7 @@ export default async function page() {
                                         </td>
                                         <td>
                                             <Link href={`/kelola-portal/edit/${portal.id}`} className="text-xs hover:underline">edit</Link>
-                                            <DeletePortal id={portal.id} />
+                                            <Delete id={portal.id} />
                                         </td>
                                     </tr>
                                 ))
