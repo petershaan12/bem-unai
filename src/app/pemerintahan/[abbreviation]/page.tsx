@@ -1,20 +1,11 @@
 import Link from 'next/link';
-import dataBem from '../../../../data_bem.json';
 import NotFound from '@/app/not-found';
 import Image from 'next/image';
+import { getChildOrganisasi, getFamilyOrganisasi, getOrganisasiByAbbreviation } from '@/app/lib/organisasi';
 
-interface Data {
-  title: string;
-  abbreviation: string;
-  description: string;
-  image: string;
-  type: string;
-  family?: string[];
-}
-
-export async function generateMetadata({ params }: { params: { nama: string } }) {
-  const nama = params.nama;
-  const data = dataBem.find((entry) => entry.abbreviation === nama);
+export async function generateMetadata({ params }: { params: { abbreviation: string } }) {
+  const abbreviation = await params.abbreviation;
+  const data = await getOrganisasiByAbbreviation(abbreviation);
 
   if (!data) {
     return {
@@ -29,14 +20,17 @@ export async function generateMetadata({ params }: { params: { nama: string } })
   };
 }
 
-export default async function Page({ params }: { params: { nama: string } }) {
-  const nama = params.nama;
-  const data = dataBem.find((entry) => entry.abbreviation === nama);
+export default async function Page({ params }: { params: { abbreviation: string } }) {
+  const abbreviation = await params.abbreviation;
+  const data = await getOrganisasiByAbbreviation(abbreviation);
+  const parent = data?.type === 'Kementrian';
 
   if (!data) {
     return <NotFound />;
   }
 
+  const family = data.familyId ? await getFamilyOrganisasi(data.familyId) : parent ? await getChildOrganisasi(data.id) : null;
+  
   return (
     <main className="mx-auto items-center text-white flex min-h-screen flex-col">
       <section className="relative flex h-screen w-full flex-col items-center justify-center overflow-hidden lg:h-full xl:h-[48rem]">
@@ -73,33 +67,27 @@ export default async function Page({ params }: { params: { nama: string } }) {
           </h2>
           <p className="text-justify">{data.description}</p>
 
-          {data.family && (
+          {family && (
             <div>
               <h4 className="text-xl md:text-3xl font-semibold text-justify mt-12">
                 Koordinasi
               </h4>
 
-              <div className="flex flex-col md:flex-row">
-                {data.family.map((familyAbbreviation, index) => {
-                  const familyItem = dataBem.find(
-                    (entry) => entry.abbreviation === familyAbbreviation
-                  );
-
-                  return familyItem ? (
-                    <Link
-                      href={`/pemerintahan/${familyItem.abbreviation}`}
-                      key={index}
-                      className="mt-4 flex items-center gap-4 hover:bg-gray-300/10 w-fit px-6 py-4 rounded-full"
-                    >
-                      <img
-                        src={`/icon/${familyItem.image}.svg`}
-                        alt={familyItem.title}
-                        className="w-10 h-10"
-                      />
-                      <p className="text-sm font-light">{familyItem.title}</p>
-                    </Link>
-                  ) : null;
-                })}
+              <div className="flex flex-col  flex-wrap md:flex-row">
+                {family?.map((familyItem, index) => (
+                  <Link
+                    href={`/pemerintahan/${familyItem.abbreviation}`}
+                    key={index}
+                    className="mt-4 flex items-center gap-4 hover:bg-gray-300/10 px-6 py-4 rounded-full"
+                  >
+                    <img
+                      src={`/icon/${familyItem.image}.svg`}
+                      alt={familyItem.title}
+                      className="w-10 h-10"
+                    />
+                    <p className="text-sm font-light">{familyItem.title}</p>
+                  </Link>
+                ))}
               </div>
             </div>
           )}

@@ -5,7 +5,7 @@
     "title": "Presiden",
     "description": "Presiden BEM UNAI adalah pemimpin tertinggi dalam organisasi BEM UNAI. Ia bertanggung jawab untuk mengarahkan dan mengelola seluruh kegiatan organisasi, memastikan visi dan misi BEM UNAI tercapai, serta mewakili suara mahasiswa dalam berbagai forum. Selain itu, Presiden juga berperan dalam merencanakan program kerja dan mengevaluasi hasil kegiatan.",
     "image": "staff_inti"
-  },
+},
   {
     "abbreviation": "wakpres",
     "type": "Staff Inti",
@@ -14,7 +14,7 @@
     "image": "staff_inti"
   },
   {
-    "abbreviation": "sekjen",
+  "abbreviation": "sekjen",
     "type": "Staff Inti",
     "title": "Sekretaris Jendral",
     "description": "Sekretaris Jendral BEM UNAI bertanggung jawab untuk mengelola administrasi dan dokumentasi organisasi serta menjadi koordinator antar divisi.",
@@ -224,6 +224,7 @@
     "type": "Kementrian",
     "title": "Menteri Pendidikan",
     "description": "Menteri Pendidikan BEM UNAI bertanggung jawab untuk mengelola kegiatan pendidikan dan pengembangan mahasiswa.",
+    "image": "kementrian",
     "family": ["pendik", "muku"]
   },
   {
@@ -231,6 +232,7 @@
     "type": "Divisi",
     "title": "Divisi Mutu & Kualitas",
     "description": "Divisi Mutu & Kualitas BEM UNAI bertanggung jawab untuk memastikan kualitas kegiatan dan layanan organisasi.",
+    "image": "divisi",
     "family": ["pendik", "muku"]
   }
 ]

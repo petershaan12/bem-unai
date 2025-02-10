@@ -2,10 +2,12 @@
 
 import { redirect } from "next/navigation";
 import { deleteSession, getSession } from "./session";
+import prisma from "./prisma";
 
-const getUser =  async () => {
+const getUser = async () => {
     const session = await getSession();
-    if(!session || !session.userId) {
+    if (!session || !session.userId) {
+        console.log("No user session found");
         return null;
     }
     const user = await prisma.user.findUnique({
@@ -13,7 +15,8 @@ const getUser =  async () => {
             id: session.userId as string,
         },
     });
-    if(!user) {
+    if (!user) {
+        console.log("User not found");
         return null;
     }
     return user;

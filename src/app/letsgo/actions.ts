@@ -48,5 +48,5 @@ export async function login(prevState: any, formData: FormData) {
   }
 
   await createSession(user.id);
-  redirect("/create");
+  redirect("/profile");
 }

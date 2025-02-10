@@ -31,7 +31,31 @@ model Post {
   updatedAt DateTime @updatedAt
   title     String
   content   String
+  bannerImage String?
+  orgnizer  String?
   published Boolean  @default(false)
   authorId  String   @db.ObjectId
   author    User     @relation(fields: [authorId], references: [id])
 }
+  a``
+model Organisasi {
+  id          String           @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  abbreviation String
+  type        String
+  title       String
+  description String?
+  image       String?
+  familyId    String?          @db.ObjectId
+  family      Organisasi? @relation("FamilyRelation", fields: [familyId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children    Organisasi[] @relation("FamilyRelation")
+}
+
+model Portal {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  link     String
+} 

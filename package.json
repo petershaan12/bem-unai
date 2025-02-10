@@ -16,6 +16,8 @@
     "react-countup": "^6.5.3",
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
+    "react-quill-new": "^3.3.3",
+    "react-toastify": "^11.0.3",
     "zod": "^3.24.1"
   },
   "devDependencies": {

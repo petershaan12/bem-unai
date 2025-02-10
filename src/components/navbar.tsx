@@ -1,24 +1,32 @@
 "use client"
 import Link from "next/link";
-import dataBem from "../../data_bem.json";
 import { useEffect } from "react";
+import { PiLinkSimple } from "react-icons/pi";
 
 interface NavbarProps {
   user: any | null;
+  dataBem: any[];
 }
 
-export function Navbar({ user }: NavbarProps) {
-// export function Navbar() {
+export function Navbar({ user, dataBem }: NavbarProps) {
+
   const handleClick = () => {
     const dropdowns = document.querySelector(".dropdown");
+    const dropdowns2 = document.querySelector(".dropdown2");
     dropdowns?.removeAttribute("open");
+    dropdowns2?.removeAttribute("open");
   };
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       const dropdowns = document.querySelector(".dropdown");
+      const dropdowns2 = document.querySelector(".dropdown2");
       if (dropdowns && !dropdowns.contains(event.target as Node)) {
         dropdowns.removeAttribute("open");
+      }
+
+      if (dropdowns2 && !dropdowns2.contains(event.target as Node)) {
+        dropdowns2.removeAttribute("open");
       }
     };
 
@@ -60,79 +68,77 @@ export function Navbar({ user }: NavbarProps) {
       </div>
       <div className="flex-none hidden md:block">
         <ul className="menu menu-horizontal px-1 items-center">
-          <li>
-            <details id="dropdown" className="dropdown">
-              <summary>Pemerintahan</summary>
-              <ul className="menu menu-horizontal dropdown-content bg-primary rounded-box min-w-max right-0 border border-secondary/50">
-                {Array.from(new Set(dataBem.map((data) => data.type))).map(
-                  (type) => {
-                    const item = dataBem.find((data) => data.type === type);
-                    const imageSrc = item
-                      ? `/icon/${item.image}.svg`
-                      : "/icon/default.svg";
-                    return (
-                      <li key={type} className="flex items-center">
-                        <div className="flex items-center gap-4">
-                          <img src={imageSrc} alt={type} className="w-7 h-7" />
-                          <span className="text-sm text-white">
-                            {item ? item.type : "Tidak ada data"}
-                          </span>
-                        </div>
-                        <ul className="-ml-2 max-h-80 overflow-y-auto custom-scroll">
-                          {dataBem
-                            .filter((data) => data.type === type)
-                            .map((data) => (
-                              <li
-                                key={data.abbreviation}
-                                className="hover:bg-secondary/50 hover:rounded-lg"
-                              >
-                                <Link
-                                  href={`/pemerintahan/${data.abbreviation}`}
-                                  onClick={handleClick}
+          {dataBem && (
+            <li>
+              <details id="dropdown" className="dropdown">
+                <summary>Pemerintahan</summary>
+                <ul className="menu menu-horizontal dropdown-content bg-primary rounded-box min-w-max right-0 border border-secondary/50">
+                  {Array.from(new Set(dataBem.map((data) => data.type))).map(
+                    (type) => {
+                      const item = dataBem.find((data) => data.type === type);
+                      const imageSrc = item
+                        ? `/icon/${item.image}.svg`
+                        : "/icon/default.svg";
+                      return (
+                        <li key={type} className="flex items-center">
+                          <div className="flex items-center gap-4">
+                            <img src={imageSrc} alt={type} className="w-7 h-7" />
+                            <span className="text-sm text-white">
+                              {item ? item.type : "Tidak ada data"}
+                            </span>
+                          </div>
+                          <ul className="-ml-2 max-h-80 overflow-y-auto custom-scroll">
+                            {dataBem
+                              .filter((data) => data.type === type)
+                              .map((data) => (
+                                <li
+                                  key={data.abbreviation}
+                                  className="hover:bg-secondary/50 hover:rounded-lg"
                                 >
-                                  {data.title}
-                                </Link>
-                              </li>
-                            ))}
-                        </ul>
-                      </li>
-                    );
-                  }
-                )}
-              </ul>
-            </details>
+                                  <Link
+                                    href={`/pemerintahan/${data.abbreviation}`}
+                                    onClick={handleClick}
+                                  >
+                                    {data.title}
+                                  </Link>
+                                </li>
+                              ))}
+                          </ul>
+                        </li>
+                      );
+                    }
+                  )}
+                </ul>
+              </details>
+            </li>
+          )}
+          <li>
+          <Link href="/portal">Portal <PiLinkSimple /></Link>
           </li>
           <li>
-            <details>
-              <summary>Audit</summary>
-              <ul className="p-2">
-                <li>
-                  <p>Submenu 1</p>
-                </li>
-                <li>
-                  <p>Submenu 2</p>
-                </li>
-              </ul>
-            </details>
-          </li>
-          <li>
-            <Link href="/info">Informasi</Link>
+            <Link href="/berita">Informasi</Link>
           </li>
           {user && (
             <>
             <li>
-              <Link href="/create">Create</Link>
-            </li>
-            <li>
-              <Link href="/profile" className="flex items-center gap-4">
-                <div className="avatar placeholder">
-                  <div className="bg-secondary text-primary w-10 rounded-full">
-                    {user.name.substring(0, 2).toUpperCase()}
+                <Link href="/kelola-portal">Kelola Portal</Link>
+              </li>
+              <li>
+                <Link href="/kelola-pemerintahan">Kelola Pemerintahan</Link>
+              </li>
+              <li>
+                <Link href="/buat-berita">Buat Berita</Link>
+              </li>
+              <li>
+                <Link href="/profile" className="flex items-center gap-4">
+                  <div className="avatar placeholder">
+                    <div className="bg-secondary text-primary w-10 rounded-full">
+                      {user.name.substring(0, 2).toUpperCase()}
+                    </div>
                   </div>
-                </div>
-                <p>{user.name}</p>
-              </Link>
-            </li>
+                  <p>{user.name}</p>
+                </Link>
+              </li>
             </>
           )}
         </ul>

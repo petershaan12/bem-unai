@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import Card from "./card";
-import dataBem from "../../data_bem.json";
 
 interface Data {
   title: string;
@@ -12,7 +11,7 @@ interface Data {
   image: string;
 }
 
-const Lanskap: React.FC = () => {
+export function Lanskap({dataBem}: any) {
   const [data, setData] = useState<Data[]>([]);
   const [data2, setData2] = useState<Data[]>([]);
 
