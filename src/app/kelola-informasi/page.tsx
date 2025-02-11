@@ -67,7 +67,7 @@ export default async function page() {
                                         </td>
                                         <td>
                                             <Link href={`/berita/${post.slug}`} className="text-xs hover:underline">details</Link>
-                                            <Link href={`/kelola-informasi/edit/${post.slug}`} className="ml-3 text-xs hover:underline">edit</Link>
+                                            <Link href={`/kelola-informasi/edit/${post.id}`} className="ml-3 text-xs hover:underline">edit</Link>
                                             {/* <Delete id={post.id} /> */}
                                         </td>
                                     </tr>

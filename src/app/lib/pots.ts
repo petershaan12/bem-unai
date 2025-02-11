@@ -41,6 +41,24 @@ const getOnePost = async (slug: string) => {
     return post;
 }
 
+const getOnePostById = async (id: string) => {
+    const post = await prisma.post.findFirst({
+        where: {
+            id: id,
+        },
+        include: {
+            organisasi: {
+                select: {
+                    title: true,
+                    image: true,
+                    abbreviation: true,
+                },
+            }
+        }
+    });
+    return post;
+}
+
 const incrementViewCount = async (slug: string) => {
     const post = await prisma.post.findFirst({
         where: {
@@ -138,4 +156,4 @@ const createPosts = async (formData: FormData) => {
     }
 }
 
-    export { getAllPosts, getOnePost, createPosts, incrementViewCount };
+    export { getAllPosts, getOnePost, createPosts, incrementViewCount, getOnePostById };

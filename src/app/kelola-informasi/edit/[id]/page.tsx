@@ -1,10 +1,10 @@
 import Form  from "../../Form";
 import { redirect } from "next/navigation";
-import { getOnePost } from "@/app/lib/pots";
+import { getOnePostById } from "@/app/lib/pots";
 
-export default async function page({ params }: { params: { slug: string } }) {
-    const slug = params.slug;
-    const data = await getOnePost(slug);
+export default async function page({ params }: { params: { id: string } }) {
+    const id = params.id;
+    const data = await getOnePostById(id);
 
     if (!data) {
         redirect('/404');

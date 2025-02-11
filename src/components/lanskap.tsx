@@ -55,7 +55,7 @@ export function Lanskap({dataBem}: any) {
           </div>
         </div>
 
-        <div className="relative flex overflow-x-hidden mt-2 md:mt-8">
+        <div className="relative flex overflow-x-hidden">
           <div className="animate-marquee3 whitespace-nowrap flex reverse py-5">
             {data2.map((item, index) => (
               <div key={index} className="mx-2 md:mx-4">

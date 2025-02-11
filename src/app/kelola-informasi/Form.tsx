@@ -8,7 +8,6 @@ import { createPosts } from "@/app/lib/pots";
 import { getAllOrganisasi } from "../lib/organisasi";
 import { toast } from "react-toastify";
 
-
 interface Organisasi {
     id: string;
     title: string;
@@ -18,15 +17,16 @@ interface Organisasi {
     description: string | null;
 }
 
-export default function Form(prevData?: any) {
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
+export default function Form({ prevData }: { prevData?: any }) {
+    
+    const [title, setTitle] = useState(prevData?.title || "");
+    const [content, setContent] = useState(prevData?.content || "");
     const [error, setError] = useState("");
     const [image, setImage] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
-    const [selectedOrganizer, setSelectedOrganizer] = useState("");
+    const [selectedOrganizer, setSelectedOrganizer] = useState(prevData?.organisasiId || "");
     const [dataBem, setDataBem] = useState<Organisasi[]>([]);
-    const [date, setDate] = useState("");
+    const [date, setDate] = useState(prevData?.date ? new Date(prevData.date).toISOString().slice(0, 16) : "");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -72,7 +72,7 @@ export default function Form(prevData?: any) {
 
         const quillImages = content.match(/<img[^>]+src="([^">]+)"/g);
         if (quillImages) {
-            quillImages.forEach((imgTag) => {
+            quillImages.forEach((imgTag: any) => {
                 const match = imgTag.match(/src="([^">]+)"/);
                 const imgSrc = match ? match[1] : "";
                 formData.append("quillImages", imgSrc);
