@@ -6,7 +6,7 @@ export default async function page() {
     const data = await getAllPortal();
 
     return (
-        <main className="relative container mx-auto p-4 py-16 sm:py-4 flex flex-col mt-8 justify-center min-h-screen">
+        <main className="relative container mx-auto p-8 py-16 sm:py-4 flex flex-col mt-8 justify-center min-h-screen">
             <Image
                 alt="cover"
                 loading="eager"

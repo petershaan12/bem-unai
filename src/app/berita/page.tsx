@@ -32,6 +32,7 @@ export default async function page() {
                             content={post.content}
                             bannerImage={post.bannerImage}
                             organizer={post.organisasi.title}
+                            views={post.views}
                         />
                     </Link>
                 ))}

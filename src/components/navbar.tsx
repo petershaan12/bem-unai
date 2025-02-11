@@ -1,7 +1,8 @@
 "use client"
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { PiLinkSimple } from "react-icons/pi";
+import NavbarMobile from "./navbarMobile";
 
 interface NavbarProps {
   user: any | null;
@@ -9,24 +10,18 @@ interface NavbarProps {
 }
 
 export function Navbar({ user, dataBem }: NavbarProps) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleClick = () => {
     const dropdowns = document.querySelector(".dropdown");
-    const dropdowns2 = document.querySelector(".dropdown2");
     dropdowns?.removeAttribute("open");
-    dropdowns2?.removeAttribute("open");
   };
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       const dropdowns = document.querySelector(".dropdown");
-      const dropdowns2 = document.querySelector(".dropdown2");
       if (dropdowns && !dropdowns.contains(event.target as Node)) {
         dropdowns.removeAttribute("open");
-      }
-
-      if (dropdowns2 && !dropdowns2.contains(event.target as Node)) {
-        dropdowns2.removeAttribute("open");
       }
     };
 
@@ -50,29 +45,52 @@ export function Navbar({ user, dataBem }: NavbarProps) {
         </Link>
       </div>
       <div className="flex-none">
-        <button className="btn btn-square btn-ghost block md:hidden">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            className="inline-block h-5 w-5 stroke-current"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            ></path>{" "}
-          </svg>
+        <button
+          className="btn btn-square btn-ghost block md:hidden"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          {isMobileMenuOpen ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              className="inline-block h-5 w-5 stroke-current"
+            >
+              <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              className="inline-block h-5 w-5 stroke-current"
+            >
+              <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M4 6h16M4 12h16m-8 6h8"
+              ></path>
+            </svg>
+          )}
         </button>
       </div>
-      <div className="flex-none hidden md:block">
+      <div
+        className={`flex-none hidden md:block ${
+          isMobileMenuOpen ? "block" : "hidden"
+        }`}
+      >
         <ul className="menu menu-horizontal px-1 items-center">
           {dataBem && (
             <li>
               <details id="dropdown" className="dropdown">
                 <summary>Pemerintahan</summary>
-                <ul className="menu menu-horizontal dropdown-content bg-primary rounded-box min-w-max right-0 border border-secondary/50">
+                <ul className={`menu menu-horizontal dropdown-content bg-primary rounded-box min-w-max border border-secondary/50 ${user ? '' : 'right-0'} `}>
                   {Array.from(new Set(dataBem.map((data) => data.type))).map(
                     (type) => {
                       const item = dataBem.find((data) => data.type === type);
@@ -113,7 +131,7 @@ export function Navbar({ user, dataBem }: NavbarProps) {
             </li>
           )}
           <li>
-          <Link href="/portal">Portal <PiLinkSimple /></Link>
+            <Link href="/portal">Portal <PiLinkSimple /></Link>
           </li>
           <li>
             <Link href="/berita">Informasi</Link>
@@ -123,7 +141,7 @@ export function Navbar({ user, dataBem }: NavbarProps) {
               <li>
                 <Link href="/kelola-pemerintahan">Kelola Pemerintahan</Link>
               </li>
-            <li>
+              <li>
                 <Link href="/kelola-portal">Kelola Portal</Link>
               </li>
               <li>
@@ -143,6 +161,9 @@ export function Navbar({ user, dataBem }: NavbarProps) {
           )}
         </ul>
       </div>
+    
+      <NavbarMobile user={user} dataBem={dataBem} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
+
     </div>
   );
 }

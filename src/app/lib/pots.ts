@@ -41,6 +41,29 @@ const getOnePost = async (slug: string) => {
     return post;
 }
 
+const incrementViewCount = async (slug: string) => {
+    const post = await prisma.post.findFirst({
+        where: {
+            slug: slug,
+        },
+    });
+
+    if (!post) {
+        return null;
+    }
+
+    const updatedPost = await prisma.post.update({
+        where: {
+            id: post.id,
+        },
+        data: {
+            views: post.views + 1,
+        },
+    });
+
+    return updatedPost.views;
+};
+
 
 const createSchema = z.object({
     title: z.string().min(1, "Title is required").max(100, "Title must be at most 100 characters long"),
@@ -115,4 +138,4 @@ const createPosts = async (formData: FormData) => {
     }
 }
 
-    export { getAllPosts, getOnePost, createPosts };
+    export { getAllPosts, getOnePost, createPosts, incrementViewCount };

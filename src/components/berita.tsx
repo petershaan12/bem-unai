@@ -1,4 +1,17 @@
-export default function Berita() {
+import { getAllPosts } from "@/app/lib/pots";
+import CardBerita2 from "./cardBerita2";
+import Link from "next/link";
+
+export default async function Berita() {
+  const allPosts = await getAllPosts();
+
+  if (!allPosts) {
+    return (
+      <div>
+        <h1>Belum ada berita</h1>
+      </div>
+    )
+  }
   return (
     <section className="flex flex-col items-center mx-auto p-4 mt-16 mb-32">
       <h2 className="text-2xl md:text-4xl font-bold mb-4 text-center">
@@ -11,35 +24,29 @@ export default function Berita() {
 
       <div className="grid grid-cols-1 gap-6">
         <div className="w-full md:w-[800px]">
-          <hr />
-          <div className="flex flex-col md:flex-row p-6 gap-10">
-            <img
-              src="/posts/1.png"
-              alt="Berita 1"
-              className="rounded-lg w-full md:w-auto"
-            />
+        <hr />
+          {allPosts.slice(0, 3).map((post) => (
             <div>
-              <h3 className="text-white text-5xl font-bigNoddle mt-2">
-                Sportvaganza
-              </h3>
-              <p className="text-gray-300 mt-2 font-light">January 28, 2025</p>
-              <div className="flex items-center gap-4 mt-4">
-                <img
-                  src={`/icon/divisi.svg`}
-                  alt="divisi"
-                  className="w-8 h-8"
+              <Link href={`/berita/${post.slug}`} key={post.id}>
+                <CardBerita2
+                  key={post.id}
+                  title={post.title}
+                  date={post.date.toISOString()}
+                  content={post.content}
+                  bannerImage={post.bannerImage}
+                  organizer={post.organisasi.title}
+                  views={post.views}
                 />
-                <span className="text-sm text-white">Divisi Olahraga</span>
-              </div>
+              </Link>
+              <hr />
             </div>
-          </div>
-          <hr />
+          ))}
         </div>
       </div>
 
-      <button className="bg-gradient-to-r from-secondary to-[#9C8C38] text-primary px-4 py-2 mt-16 rounded-full transition duration-300 transform hover:scale-105 hover:from-[#9C8C38] hover:to-secondary hover:text-black">
+      <Link href={"/berita"} className="bg-gradient-to-r from-secondary to-[#9C8C38] text-primary px-4 py-2 mt-16 rounded-full transition duration-300 transform hover:scale-105 hover:from-[#9C8C38] hover:to-secondary hover:text-black">
         Baca Selengkapnya
-      </button>
+      </Link>
     </section>
   );
 }
