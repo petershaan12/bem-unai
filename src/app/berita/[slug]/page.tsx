@@ -13,19 +13,21 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
     return (
         <div className="max-w-2xl mx-auto p-4 pt-32 pb-16">
-            <div className="mb-10 ">
+            <div className="mb-5 md:mb-10 ">
                 <h1 className="text-3xl font-bold mb-7 text-center">{data.title}</h1>
-                <div className="flex justify-between items-end">
-                    <div className="flex items-center justify-center mt-2 gap-2">
+                <div className="flex flex-col md:flex-row md:justify-between items-center gap-y-5 md:items-end">
+                    <div className="flex flex-col md:flex-row items-center justify-center mt-2 gap-2">
                         <h2 className="text-center font-semiBold text-gray-300 mr-4">Diselengarakan oleh:</h2>
-                        <img
-                            src={`/icon/${data.organisasi.image}.svg`}
-                            alt="divisi"
-                            className="w-8 h-8"
-                        />
-                        <div className="text-sm font-light">
-                            <p>{data.organisasi.title}</p>
-                            <p className="text-xs ">{new Date(data.date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+                        <div className=" flex md:flex-row items-center gap-4">
+                            <img
+                                src={`/icon/${data.organisasi.image}.svg`}
+                                alt="divisi"
+                                className="w-8 h-8"
+                            />
+                            <div className="text-sm font-light">
+                                <p>{data.organisasi.title}</p>
+                                <p className="text-xs ">{new Date(data.date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+                            </div>
                         </div>
                     </div>
                     <IncrementView prevView={data.views} slug={data.slug} />

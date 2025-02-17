@@ -22,7 +22,7 @@ export default async function page() {
                 Kunjungi blog kami untuk mendapatkan informasi terkini seputar kegiatan
                 mahasiswa UNAI
             </p>
-            <div className={`grid ${allPosts.length === 1 ? 'grid-cols-1' : 'grid-cols-3'} gap-6 px-32`}>
+            <div className={`grid grid-cols-1 ${allPosts.length === 1 ? 'md:grid-cols-1' : 'md:grid-cols-3'} gap-6 px-0 md:px-32`}>
                 {allPosts.map((post) => (
                     <Link href={`/berita/${post.slug}`} key={post.id}>
                         <CardBerita
