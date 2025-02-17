@@ -2,8 +2,8 @@ import { getOrganisasiByAbbreviation } from "@/app/lib/organisasi";
 import Form  from "../../Form";
 import { redirect } from "next/navigation";
 
-export default async function page({ params }: { params: { abbreviation: string } }) {
-    const abbreviation = params.abbreviation;
+export default async function page({ params }: { params: Promise<{ abbreviation: string }> }) {
+    const {abbreviation} = await params;
     const data = await getOrganisasiByAbbreviation(abbreviation);
 
     if (!data) {

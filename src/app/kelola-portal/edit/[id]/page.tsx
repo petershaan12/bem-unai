@@ -2,8 +2,8 @@ import Form  from "../../Form";
 import { redirect } from "next/navigation";
 import { getOnePortal } from "@/app/lib/portal";
 
-export default async function page({ params }: { params: { id: string } }) {
-    const id = params.id;
+export default async function page({ params }: { params: Promise<{ id: string }>}) {
+    const {id} = await params;
     const data = await getOnePortal(id);
 
     if (!data) {

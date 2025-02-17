@@ -8,6 +8,7 @@ import { upsertPost } from "@/app/lib/pots";
 import { getAllOrganisasi } from "../lib/organisasi";
 import { toast } from "react-toastify";
 import { redirect } from "next/navigation";
+import Image from "next/image";
 
 interface Organisasi {
     id: string;
@@ -182,7 +183,7 @@ export default function Form({ prevData }: { prevData?: any }) {
                     className="w-full"
                 />
                 {imagePreview && (
-                    <img src={imagePreview} alt="Preview" className="mt-2 w-full h-64 object-cover" />
+                    <Image src={imagePreview} alt="Preview" className="mt-2 w-full h-64 object-cover" width={200} height={300} />
                 )}
             </div>
             <button type="submit" className="w-full mt-5 bg-gradient-to-r from-secondary to-[#9C8C38] text-primary px-4 py-2 rounded-xl transition duration-300 transform hover:scale-105 hover:from-[#9C8C38] hover:to-secondary hover:text-black">

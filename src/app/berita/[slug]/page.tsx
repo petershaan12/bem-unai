@@ -1,11 +1,11 @@
 import { getOnePost } from "@/app/lib/pots";
 import parse from 'html-react-parser';
-import { CgEye } from "react-icons/cg";
 import IncrementView from "./IncrementView";
 import Image from "next/image";
 
-export default async function Page({ params }: { params: { slug: string } }) {
-    const slug = params.slug;
+
+export default async function Page({ params }: { params: Promise<{ slug: string}>}) {
+    const { slug } = await params;
     const data = await getOnePost(slug);
 
     if (!data) {
@@ -19,15 +19,17 @@ export default async function Page({ params }: { params: { slug: string } }) {
                 <div className="flex flex-col md:flex-row md:justify-between items-center gap-y-5 md:items-end">
                     <div className="flex flex-col md:flex-row items-center justify-center mt-2 gap-2">
                         <h2 className="text-center font-semiBold text-gray-300 mr-4">Diselengarakan oleh:</h2>
-                        <div className=" flex md:flex-row items-center gap-4">
-                            <img
+                        <div className="flex md:flex-row items-center gap-4">
+                            <Image
                                 src={`/icon/${data.organisasi.image}.svg`}
                                 alt="divisi"
                                 className="w-8 h-8"
+                                width={32}
+                                height={32}
                             />
                             <div className="text-sm font-light">
                                 <p>{data.organisasi.title}</p>
-                                <p className="text-xs ">{new Date(data.date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+                                <p className="text-xs">{new Date(data.date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
                             </div>
                         </div>
                     </div>

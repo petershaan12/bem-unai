@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import NavbarMobile from "./navbarMobile";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 interface NavbarProps {
   user: any | null;
@@ -38,10 +39,12 @@ export function Navbar({ user, dataBem }: NavbarProps) {
     <div className="navbar bg-primary px-5 md:px-20 fixed top-0 z-20 md:h-20 shadow-lg">
       <div className="flex-1">
         <Link href="/" className="font-semibold text-2xl flex items-center gap-5">
-          <img
+          <Image
             src="/bem-logo.svg"
             alt="Logo"
             className="w-8 h-8 ml-4 md:ml-0 md:h-10 md:w-10"
+            width={40}
+            height={40}
           />
           <span className="hidden md:block">BEM Unai</span>
         </Link>
@@ -101,7 +104,7 @@ export function Navbar({ user, dataBem }: NavbarProps) {
                       return (
                         <li key={type} className="flex items-center">
                           <div className="flex items-center gap-4">
-                            <img src={imageSrc} alt={type} className="w-7 h-7" />
+                            <Image src={imageSrc} alt={type} className="w-7 h-7" width={20} height={20}/>
                             <span className="text-sm text-white">
                               {item ? item.type : "Tidak ada data"}
                             </span>

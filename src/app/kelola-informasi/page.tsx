@@ -2,17 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { getAllPosts } from "../lib/pots";
 import Delete from "./Delete";
-// import Delete from "./Delete";
-
-interface PostProps {
-    id: string;
-    title: string;
-    bannerImage: string;
-    date: string;
-    published: boolean;
-    image: string;
-    type: string;
-}
 
 export default async function page() {
     const allPosts = await getAllPosts();

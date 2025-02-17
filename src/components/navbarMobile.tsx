@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -48,7 +49,7 @@ export default function NavbarMobile({ user, dataBem, isMobileMenuOpen, setIsMob
                                                 className="flex gap-4 cursor-pointer"
                                                 onClick={() => toggleDropdown(key)}
                                             >
-                                                <img src={imageSrc} alt={type} className="w-7 h-7" />
+                                                <Image src={imageSrc} alt={type} className="w-7 h-7" width={20} height={20} />
                                                 <span className="text-sm text-white">
                                                     {item ? item.type : "Tidak ada data"}
                                                 </span>

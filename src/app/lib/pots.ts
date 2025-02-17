@@ -3,7 +3,6 @@
 import { z } from "zod";
 import prisma from "./prisma";
 import { getSession } from "./session";
-import { writeFile } from "fs/promises";
 import { revalidatePath } from "next/cache";
 import { put } from "@vercel/blob";
 

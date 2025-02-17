@@ -3,8 +3,8 @@ import NotFound from '@/app/not-found';
 import Image from 'next/image';
 import { getChildOrganisasi, getFamilyOrganisasi, getOrganisasiByAbbreviation } from '@/app/lib/organisasi';
 
-export async function generateMetadata({ params }: { params: { abbreviation: string } }) {
-  const abbreviation = await params.abbreviation;
+export async function generateMetadata({ params }: { params: Promise<{ abbreviation: string }>}) {
+  const {abbreviation} = await params;
   const data = await getOrganisasiByAbbreviation(abbreviation);
 
   if (!data) {
@@ -20,8 +20,8 @@ export async function generateMetadata({ params }: { params: { abbreviation: str
   };
 }
 
-export default async function Page({ params }: { params: { abbreviation: string } }) {
-  const abbreviation = await params.abbreviation;
+export default async function Page({ params }: { params: Promise<{ abbreviation: string }>}) {
+  const {abbreviation} = await params;
   const data = await getOrganisasiByAbbreviation(abbreviation);
   const parent = data?.type === 'Kementrian';
 
@@ -40,17 +40,15 @@ export default async function Page({ params }: { params: { abbreviation: string 
           decoding="async"
           className="object-fit z-0 w-full h-full"
           src="/bg-pemerintahan.png"
-          layout="fill"
-          objectFit="cover"
+          width={1920}
+          height={1080}
         />
         <div className="absolute z-10 rounded-md overflow-hidden p-4">
           <div className="box flex flex-col items-center justify-center p-3 gap-2 bg-opacity-50 rounded-md">
             <Image
               alt="spi"
-              loading="lazy"
               width={125}
               height={125}
-              decoding="async"
               src={`/icon/${data.image}.svg`}
               className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40"
             />
@@ -75,18 +73,20 @@ export default async function Page({ params }: { params: { abbreviation: string 
 
               <div className="flex flex-col  flex-wrap md:flex-row">
                 {family?.map((familyItem, index) => (
-                  <Link
+                    <Link
                     href={`/pemerintahan/${familyItem.abbreviation}`}
                     key={index}
                     className="mt-4 flex items-center gap-4 hover:bg-gray-300/10 px-6 py-4 rounded-full"
-                  >
-                    <img
+                    >
+                    <Image
                       src={`/icon/${familyItem.image}.svg`}
                       alt={familyItem.title}
+                      width={40}
+                      height={40}
                       className="w-10 h-10"
                     />
                     <p className="text-sm font-light">{familyItem.title}</p>
-                  </Link>
+                    </Link>
                 ))}
               </div>
             </div>
