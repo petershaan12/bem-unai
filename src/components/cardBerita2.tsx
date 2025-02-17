@@ -13,11 +13,11 @@ interface CardProps {
 
 const CardBerita2: React.FC<CardProps> = ({ title, date, content, bannerImage, organizer, views }: CardProps) => {
   return (
-    <div className="flex flex-col md:flex-row md:p-6 gap-10 -mt-5 justify-center items-center ">
+    <div className="flex flex-col md:flex-row md:p-0 gap-10 -mt-5 justify-start items-center ">
       <Image
        src={bannerImage || '/default-image-path.jpg'}
         alt="Berita 1"
-        className=" object-cover h-36 "
+        className=" object-cover w-72"
         width={280}
         height={100}
       />

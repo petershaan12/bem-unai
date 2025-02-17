@@ -26,7 +26,7 @@ export function Lanskap({dataBem}: any) {
   return (
     <section className="flex flex-col items-center mx-auto p-4">
       <h2 className="text-2xl md:text-4xl font-bold mb-4 text-center">
-        Lanskap Kementerian, Divisi, & Staff Inti BEM Unai
+        Susunan Organisasi BEM Unai
       </h2>
       <p className="mb-6 font-light text-base md:text-lg text-gray-400 text-center">
         Terdapat beberapa staff inti, kementerian, dan divisi diberbagai bidang
