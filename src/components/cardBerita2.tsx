@@ -6,16 +6,16 @@ interface CardProps {
   title: string;
   date: string;
   content: string;
-  bannerImage: string;
+  bannerImage: string | null;
   organizer: string | null;
   views: number;
 }
 
 const CardBerita2: React.FC<CardProps> = ({ title, date, content, bannerImage, organizer, views }: CardProps) => {
   return (
-    <div className="flex flex-col md:flex-row md:p-6 gap-10 -mt-5 ">
+    <div className="flex flex-col md:flex-row md:p-6 gap-10 -mt-5 justify-center items-center ">
       <Image
-        src={bannerImage}
+       src={bannerImage || '/default-image-path.jpg'}
         alt="Berita 1"
         className=" object-cover h-36 "
         width={280}
@@ -27,14 +27,16 @@ const CardBerita2: React.FC<CardProps> = ({ title, date, content, bannerImage, o
         </h3>
         <p className="text-gray-300 mt-2 text-sm font-light">{new Date(date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
         <div className='flex justify-between items-center mt-4 gap-10' >
-          <div className="flex items-center gap-4">
-            <img
+            <div className="flex items-center gap-4">
+            <Image
               src={`/icon/divisi.svg`}
               alt="divisi"
               className="w-8 h-8"
+              width={32}
+              height={32}
             />
             <span className="text-sm text-white">{organizer}</span>
-          </div>
+            </div>
           <div className="flex items-center gap-2 ">
             <CgEye className="inline-block" />
             <span className="font-light">{views} dilihat</span>

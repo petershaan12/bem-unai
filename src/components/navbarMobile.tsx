@@ -1,8 +1,8 @@
 "use client"
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { PiLinkSimple } from "react-icons/pi";
 
 interface NavbarProps {
     user: any | null;
@@ -13,7 +13,7 @@ interface NavbarProps {
 
 export default function NavbarMobile({ user, dataBem, isMobileMenuOpen, setIsMobileMenuOpen }: NavbarProps) {
     const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
-
+    const pathname = usePathname();
     const toggleDropdown = (key: any) => {
         setOpenDropdowns((prev) => ({
             ...prev,
@@ -22,7 +22,7 @@ export default function NavbarMobile({ user, dataBem, isMobileMenuOpen, setIsMob
     };
 
     const handleClick = () => {
-        setIsMobileMenuOpen(false); 
+        setIsMobileMenuOpen(false);
     }
 
     console.log(isMobileMenuOpen);
@@ -79,24 +79,24 @@ export default function NavbarMobile({ user, dataBem, isMobileMenuOpen, setIsMob
                         </details>
                     </li>
                 )}
-                <li>
-                    <Link href="/portal" onClick={handleClick}>Portal <PiLinkSimple /></Link>
+                <li className={pathname === "/portal" ? "text-secondary" : ""}>
+                    <Link href="/portal" onClick={handleClick}>Portal</Link>
                 </li>
-                <li>
+                <li className={pathname === "/berita" ? "text-secondary" : ""}>
                     <Link href="/berita" onClick={handleClick}>Informasi</Link>
                 </li>
                 {user && (
                     <>
-                        <li>
+                        <li className={pathname === "/kelola-pemerintahan" ? "text-secondary" : ""}>
                             <Link href="/kelola-pemerintahan" onClick={handleClick}>Kelola Pemerintahan</Link>
                         </li>
-                        <li>
+                        <li className={pathname === "/kelola-portal" ? "text-secondary" : ""}>
                             <Link href="/kelola-portal" onClick={handleClick}>Kelola Portal</Link>
                         </li>
-                        <li>
+                        <li className={pathname === "/kelola-informasi" ? "text-secondary" : ""}>
                             <Link href="/kelola-informasi" onClick={handleClick}>Kelola Informasi</Link>
                         </li>
-                        <li>
+                        <li className={pathname === "/profile" ? "text-secondary" : ""}>
                             <Link href="/profile" className="flex items-center gap-4" onClick={handleClick}>
                                 <div className="avatar placeholder">
                                     <div className="bg-secondary text-primary w-10 rounded-full">

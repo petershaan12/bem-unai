@@ -1,8 +1,8 @@
 "use client"
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { PiLinkSimple } from "react-icons/pi";
 import NavbarMobile from "./navbarMobile";
+import { usePathname } from "next/navigation";
 
 interface NavbarProps {
   user: any | null;
@@ -16,6 +16,8 @@ export function Navbar({ user, dataBem }: NavbarProps) {
     const dropdowns = document.querySelector(".dropdown");
     dropdowns?.removeAttribute("open");
   };
+
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -57,10 +59,10 @@ export function Navbar({ user, dataBem }: NavbarProps) {
               className="inline-block h-5 w-5 stroke-current"
             >
               <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M6 18L18 6M6 6l12 12"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
               ></path>
             </svg>
           ) : (
@@ -71,25 +73,24 @@ export function Navbar({ user, dataBem }: NavbarProps) {
               className="inline-block h-5 w-5 stroke-current"
             >
               <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M4 6h16M4 12h16m-8 6h8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16m-8 6h8"
               ></path>
             </svg>
           )}
         </button>
       </div>
       <div
-        className={`flex-none hidden md:block ${
-          isMobileMenuOpen ? "block" : "hidden"
-        }`}
+        className={`flex-none hidden md:block ${isMobileMenuOpen ? "block" : "hidden"
+          }  `}
       >
         <ul className="menu menu-horizontal px-1 items-center">
           {dataBem && (
             <li>
               <details id="dropdown" className="dropdown">
-                <summary>Pemerintahan</summary>
+                <summary className={pathname.startsWith("/pemerintahan") ? "text-secondary" : ""}>Pemerintahan</summary>
                 <ul className={`menu menu-horizontal dropdown-content bg-primary rounded-box min-w-max border border-secondary/50 ${user ? '' : 'right-0'} `}>
                   {Array.from(new Set(dataBem.map((data) => data.type))).map(
                     (type) => {
@@ -111,7 +112,7 @@ export function Navbar({ user, dataBem }: NavbarProps) {
                               .map((data) => (
                                 <li
                                   key={data.abbreviation}
-                                  className="hover:bg-secondary/50 hover:rounded-lg"
+                                  className={`hover:bg-secondary/50 hover:rounded-lg ${pathname === `/pemerintahan/${data.abbreviation}` ? "text-secondary hover:text-white" : ""}`}
                                 >
                                   <Link
                                     href={`/pemerintahan/${data.abbreviation}`}
@@ -130,24 +131,24 @@ export function Navbar({ user, dataBem }: NavbarProps) {
               </details>
             </li>
           )}
-          <li>
-            <Link href="/portal">Portal <PiLinkSimple /></Link>
+          <li className={pathname === "/portal" ? "text-secondary" : ""}>
+            <Link href="/portal">Portal</Link>
           </li>
-          <li>
+          <li className={pathname === "/berita" ? "text-secondary" : ""}>
             <Link href="/berita">Informasi</Link>
           </li>
           {user && (
             <>
-              <li>
+              <li className={pathname === "/kelola-pemerintahan" ? "text-secondary" : ""}>
                 <Link href="/kelola-pemerintahan">Kelola Pemerintahan</Link>
               </li>
-              <li>
+              <li className={pathname === "/kelola-portal" ? "text-secondary" : ""}>
                 <Link href="/kelola-portal">Kelola Portal</Link>
               </li>
-              <li>
+              <li className={pathname === "/kelola-informasi" ? "text-secondary" : ""}>
                 <Link href="/kelola-informasi">Kelola Informasi</Link>
               </li>
-              <li>
+              <li className={pathname === "/profile" ? "text-secondary" : ""}>
                 <Link href="/profile" className="flex items-center gap-4">
                   <div className="avatar placeholder">
                     <div className="bg-secondary text-primary w-10 rounded-full">
@@ -161,7 +162,7 @@ export function Navbar({ user, dataBem }: NavbarProps) {
           )}
         </ul>
       </div>
-    
+
       <NavbarMobile user={user} dataBem={dataBem} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
 
     </div>
