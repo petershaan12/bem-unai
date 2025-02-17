@@ -1,7 +1,8 @@
 "use server"
 
-import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import prisma from "./prisma";
+import { revalidatePath } from "next/cache";
 
 const portalSchema = z.object({
     title: z.string().min(3, { message: "Nama harus lebih dari 3 karakter" }).trim(),

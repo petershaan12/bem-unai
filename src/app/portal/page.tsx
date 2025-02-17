@@ -9,12 +9,10 @@ export default async function page() {
         <main className="relative container mx-auto p-8 py-16 sm:py-4 flex flex-col mt-8 justify-center min-h-screen">
             <Image
                 alt="cover"
-                loading="eager"
                 className="object-cover absolute inset-0 w-full h-full"
                 src="/bg-pemerintahan.png"
                 width={1920}
                 height={1080}
-                priority
             />  <div className="flex flex-col items-center justify-center z-10">
                 <div className=" mb-4 z-1 text-center">
                     <div className="avatar placeholder ">
