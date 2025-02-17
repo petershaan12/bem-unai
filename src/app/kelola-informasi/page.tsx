@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getAllPosts } from "../lib/pots";
+import Delete from "./Delete";
 // import Delete from "./Delete";
 
 interface PostProps {
@@ -29,7 +30,7 @@ export default async function page() {
             </Link>
             <section
                 id="participant-table"
-                className="mb-20"
+                className="mb-20 overflow-x-auto w-full md:w-auto"
             >
                 <table className="table">
                     <thead>
@@ -51,9 +52,7 @@ export default async function page() {
                                     <tr key={post.id}>
                                         <td>
                                             <div className="flex items-center gap-3">
-                                    
-                                                        <Image src={`/posts${post.bannerImage}`} alt={post.title} width={200} height={200} />
-                                          
+                                                <Image src={post.bannerImage} alt={post.title} width={200} height={100} className="object-cover w-full h-32" />
                                             </div>
                                         </td>
                                         <td className="font-bold">
@@ -68,7 +67,7 @@ export default async function page() {
                                         <td>
                                             <Link href={`/berita/${post.slug}`} className="text-xs hover:underline">details</Link>
                                             <Link href={`/kelola-informasi/edit/${post.id}`} className="ml-3 text-xs hover:underline">edit</Link>
-                                            {/* <Delete id={post.id} /> */}
+                                            <Delete id={post.id} />
                                         </td>
                                     </tr>
                                 ))

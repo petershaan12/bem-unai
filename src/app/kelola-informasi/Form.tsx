@@ -4,9 +4,10 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 import "react-quill-new/dist/quill.snow.css";
-import { createPosts } from "@/app/lib/pots";
+import { upsertPost } from "@/app/lib/pots";
 import { getAllOrganisasi } from "../lib/organisasi";
 import { toast } from "react-toastify";
+import { redirect } from "next/navigation";
 
 interface Organisasi {
     id: string;
@@ -18,12 +19,11 @@ interface Organisasi {
 }
 
 export default function Form({ prevData }: { prevData?: any }) {
-    
     const [title, setTitle] = useState(prevData?.title || "");
     const [content, setContent] = useState(prevData?.content || "");
     const [error, setError] = useState("");
     const [image, setImage] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(prevData?.bannerImage || null);
     const [selectedOrganizer, setSelectedOrganizer] = useState(prevData?.organisasiId || "");
     const [dataBem, setDataBem] = useState<Organisasi[]>([]);
     const [date, setDate] = useState(prevData?.date ? new Date(prevData.date).toISOString().slice(0, 16) : "");
@@ -43,8 +43,8 @@ export default function Form({ prevData }: { prevData?: any }) {
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            if (file.size > 1048576) { // 1MB in bytes
-                setError("Ukuran gambar tidak boleh lebih dari 1MB");
+            if (file.size > 3145728) { // 3MB in bytes
+                setError("Ukuran gambar tidak boleh lebih dari 3MB");
                 return;
             } else {
                 setImage(file);
@@ -54,9 +54,14 @@ export default function Form({ prevData }: { prevData?: any }) {
                 };
                 reader.readAsDataURL(file);
             }
-          
         }
     };
+
+    useEffect(() => {
+        if (prevData?.bannerImage) {
+            setImagePreview(prevData.bannerImage);
+        }
+    }, [prevData]);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -70,16 +75,12 @@ export default function Form({ prevData }: { prevData?: any }) {
             formData.append("image", image);
         }
 
-        const quillImages = content.match(/<img[^>]+src="([^">]+)"/g);
-        if (quillImages) {
-            quillImages.forEach((imgTag: any) => {
-                const match = imgTag.match(/src="([^">]+)"/);
-                const imgSrc = match ? match[1] : "";
-                formData.append("quillImages", imgSrc);
-            });
+        let result;
+        if (prevData) {
+            result = await upsertPost(formData, prevData.id);
+        } else {
+            result = await upsertPost(formData);
         }
-
-        const result = await createPosts(formData);
 
         if (result && result.errors) {
             setError(result.errors.message);
@@ -89,12 +90,18 @@ export default function Form({ prevData }: { prevData?: any }) {
                 autoClose: 3000,
                 theme: "dark",
             });
+            setTimeout(() => {
+                if (result?.success.redirect) {
+                    redirect(result.success.redirect);
+                }
+            }, 1000);
             setTitle("");
             setContent("");
             setImage(null);
             setImagePreview(null);
             setSelectedOrganizer("");
         }
+
     };
 
     return (
@@ -175,11 +182,11 @@ export default function Form({ prevData }: { prevData?: any }) {
                     className="w-full"
                 />
                 {imagePreview && (
-                    <img src={imagePreview} alt="Preview" className="mt-2 w-full h-auto" />
+                    <img src={imagePreview} alt="Preview" className="mt-2 w-full h-64 object-cover" />
                 )}
             </div>
             <button type="submit" className="w-full mt-5 bg-gradient-to-r from-secondary to-[#9C8C38] text-primary px-4 py-2 rounded-xl transition duration-300 transform hover:scale-105 hover:from-[#9C8C38] hover:to-secondary hover:text-black">
-                Buat Berita
+                {prevData ? "Edit Berita" : "Buat Berita"}
             </button>
             {error && <p className="text-red-500 mt-2">{error}</p>}
         </form>

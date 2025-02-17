@@ -21,7 +21,7 @@ export default async function page() {
             </Link>
             <section
                 id="participant-table"
-                className="mb-20"
+                className="mb-20 overflow-x-auto w-full md:w-auto"
             >
                 <table className="table">
                     <thead>

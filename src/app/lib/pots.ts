@@ -4,6 +4,8 @@ import { z } from "zod";
 import prisma from "./prisma";
 import { getSession } from "./session";
 import { writeFile } from "fs/promises";
+import { revalidatePath } from "next/cache";
+import { put } from "@vercel/blob";
 
 const getAllPosts = async () => {
     const posts = await prisma.post.findMany({
@@ -83,14 +85,15 @@ const incrementViewCount = async (slug: string) => {
 };
 
 
-const createSchema = z.object({
+const postSchema = z.object({
     title: z.string().min(1, "Title is required").max(100, "Title must be at most 100 characters long"),
     content: z.string().min(1, "Content is required"),
     organisasiId: z.string().min(1, "Organizer is required"),
 });
 
-const createPosts = async (formData: FormData) => {
-    const result = createSchema.safeParse(Object.fromEntries(formData));
+const upsertPost = async (formData: FormData, postId?: string) => {
+    console.log("formData", formData);
+    const result = postSchema.safeParse(Object.fromEntries(formData));
 
     const session = await getSession();
     if (!session || !session.userId) {
@@ -115,37 +118,55 @@ const createPosts = async (formData: FormData) => {
         const date = dateValue instanceof File ? new Date(dateValue.name) : new Date(dateValue as string);
 
         let imgUrl = null;
+        if (postId) {
+            const existingPost = await getOnePostById(postId);
+            imgUrl = existingPost?.bannerImage || null;
+        }
 
         if (image) {
-            const timestamp = Date.now();
-            const imageBytesData = await image.arrayBuffer();
-            const buffer = Buffer.from(imageBytesData);
-            const path = `public/posts/${timestamp}_${image.name}`;
-            await writeFile(path, buffer);
-            imgUrl = `/${timestamp}_${image.name}`;
+            const imageFile = formData.get('image') as File;
+            const blob = await put(imageFile.name, imageFile, {
+            access: 'public',
+            });
+            imgUrl = blob.url;
         }
 
         //buat slug dari title
         const slug = result.data.title.toLowerCase().replace(/ /g, "-");
 
-        await prisma.post.create({
-            data: {
-                title: result.data.title,
-                slug: slug,
-                content: result.data.content,
-                date: date,
-                organisasiId: result.data.organisasiId,
-                bannerImage: imgUrl,
-                authorId: session.userId as string,
-                published: true,
-            },
-        });
-
-        return {
-            success: {
-                message: "Post created successfully",
-            },
+        const postData = {
+            title: result.data.title,
+            slug: slug,
+            content: result.data.content,
+            date: date,
+            organisasiId: result.data.organisasiId,
+            bannerImage: imgUrl,
+            authorId: session.userId as string,
+            published: true,
         };
+
+        if (postId) {
+            await prisma.post.update({
+                where: { id: postId },
+                data: postData,
+            });
+            return {
+                success: {
+                    message: "Post updated successfully",
+                    redirect: "/kelola-informasi"
+                },
+            };
+        } else {
+            await prisma.post.create({
+                data: postData,
+            });
+            return {
+                success: {
+                    message: "Post created successfully",
+                    redirect: "/kelola-informasi"
+                },
+            };
+        }
     } catch (error) {
         console.error(error);
         return {
@@ -154,6 +175,21 @@ const createPosts = async (formData: FormData) => {
             },
         };
     }
+};
+
+const deletePost = async (id: string) => {
+    try {
+        await prisma.post.delete({
+            where: {
+                id: id,
+            },
+        });
+        revalidatePath("/kelola-informasi");
+    } catch (error) {
+        console.error("Error deleting post:", error);
+        throw new Error("Could not delete post");
+    }
 }
 
-    export { getAllPosts, getOnePost, createPosts, incrementViewCount, getOnePostById };
+
+export { getAllPosts, getOnePost, upsertPost, incrementViewCount, getOnePostById, deletePost  };

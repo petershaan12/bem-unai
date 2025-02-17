@@ -22,11 +22,11 @@ export default async function Berita() {
         mahasiswa UNAI
       </p>
 
-      <div className="grid grid-cols-1 gap-6 w-full md:w-[800px]">
+      <div className="grid grid-cols-1 gap-6 w-full md:w-[800px] mt-8">
         <hr className="my-5" />
         {allPosts.slice(0, 3).map((post) => (
-          <div>
-            <Link href={`/berita/${post.slug}`} key={post.id}>
+          <div key={post.id}>
+            <Link href={`/berita/${post.slug}`}>
               <CardBerita2
                 key={post.id}
                 title={post.title}

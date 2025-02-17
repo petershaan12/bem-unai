@@ -15,17 +15,17 @@ const CardBerita: React.FC<CardProps> = ({ title, date, content, bannerImage, or
   return (
     <div className="flex flex-col p-6 gap-10 border rounded-xl border-white/40 hover:bg-black/40 ">
       <img
-        src={`/posts${bannerImage}`}
+        src={bannerImage || '/default-image-path.jpg'}
         alt="Berita 1"
-        className="rounded-lg w-full md:w-auto"
+        className="rounded-lg w-full h-32 md:w-auto object-cover"
       />
       <div>
         <h3 className="text-white text-4xl font-bigNoddle">
           {title}
         </h3>
         <p className="text-gray-300 mt-2 text-sm font-light">{new Date(date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
-        <div className='flex justify-between items-center mt-4' >
-          <div className="flex items-center gap-4">
+        <div className='flex justify-between items-center mt-4 gap-6' >
+          <div className="flex items-center gap-2">
             <img
               src={`/icon/divisi.svg`}
               alt="divisi"

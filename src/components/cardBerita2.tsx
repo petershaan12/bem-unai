@@ -6,18 +6,18 @@ interface CardProps {
   title: string;
   date: string;
   content: string;
-  bannerImage: string | null;
+  bannerImage: string;
   organizer: string | null;
   views: number;
 }
 
 const CardBerita2: React.FC<CardProps> = ({ title, date, content, bannerImage, organizer, views }: CardProps) => {
   return (
-    <div className="flex flex-col md:flex-row md:p-6 gap-10 ">
+    <div className="flex flex-col md:flex-row md:p-6 gap-10 -mt-5 ">
       <Image
-        src={`/posts${bannerImage}`}
+        src={bannerImage}
         alt="Berita 1"
-        className="rounded-lg "
+        className=" object-cover h-36 "
         width={280}
         height={100}
       />
@@ -26,7 +26,7 @@ const CardBerita2: React.FC<CardProps> = ({ title, date, content, bannerImage, o
           {title}
         </h3>
         <p className="text-gray-300 mt-2 text-sm font-light">{new Date(date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
-        <div className='flex justify-between items-center mt-4' >
+        <div className='flex justify-between items-center mt-4 gap-10' >
           <div className="flex items-center gap-4">
             <img
               src={`/icon/divisi.svg`}
