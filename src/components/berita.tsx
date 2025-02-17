@@ -31,7 +31,6 @@ export default async function Berita() {
                 key={post.id}
                 title={post.title}
                 date={post.date.toISOString()}
-                content={post.content}
                 bannerImage={post.bannerImage}
                 organizer={post.organisasi.title}
                 views={post.views}

@@ -5,13 +5,12 @@ import { CgEye } from 'react-icons/cg';
 interface CardProps {
   title: string;
   date: string;
-  content: string;
   bannerImage: string | null;
   organizer: string | null;
   views: number;
 }
 
-const CardBerita: React.FC<CardProps> = ({ title, date, content, bannerImage, organizer, views }: CardProps) => {
+const CardBerita: React.FC<CardProps> = ({ title, date, bannerImage, organizer, views }: CardProps) => {
   return (
     <div className="flex flex-col p-6 gap-10 border rounded-xl border-white/40 hover:bg-black/40 ">
       <Image

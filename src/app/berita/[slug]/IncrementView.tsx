@@ -4,8 +4,8 @@ import { incrementViewCount } from "@/app/lib/pots"
 import { useEffect, useState } from "react"
 import { CgEye } from "react-icons/cg"
 
-export default function IncrementView({ prevView, slug }: { prevView: any, slug: string }) {
-    const [view, setView] = useState(prevView)
+export default function IncrementView({ prevView, slug }: { prevView: number, slug: string }) {
+    const [view, setView] = useState<number>(prevView)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -15,13 +15,15 @@ export default function IncrementView({ prevView, slug }: { prevView: any, slug:
 
             if (storedIp !== userIp || storedSlug !== slug) {
             const updateView = await incrementViewCount(slug)
-            setView(updateView)
+            if (updateView !== null) {
+                setView(updateView)
+            }
             localStorage.setItem('userIp', userIp)
             localStorage.setItem('slug', slug)
             }
         }
         fetchData()
-    }, [prevView])
+    }, [prevView, slug])
 
     return (
         <div className="flex items-center gap-2 ">

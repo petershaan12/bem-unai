@@ -19,7 +19,23 @@ interface Organisasi {
     description: string | null;
 }
 
-export default function Form({ prevData }: { prevData?: any }) {
+type PrevData = {
+    id: string;
+    title: string;
+    content: string;
+    date: Date;
+    bannerImage: string | null;
+    organisasiId: string;
+    organisasi: {
+        title: string;
+        image: string | null;
+        abbreviation: string;
+    };
+    authorId: string;
+};
+
+
+export default function Form({ prevData }: { prevData?: PrevData }) {
     const [title, setTitle] = useState(prevData?.title || "");
     const [content, setContent] = useState(prevData?.content || "");
     const [error, setError] = useState("");

@@ -1,9 +1,11 @@
+import Link from "next/link";
+
 export default function NotFound() {
     return (
         <div className="flex h-screen w-full flex-col items-center justify-center gap-5">
             <h2 className="text-5xl">404 | Not Found</h2>
             <p className="text-sm">Maaf, Halaman yang anda cari tidak tersedia</p>
-            <a
+            <Link
                 className="flex w-full items-center justify-center gap-2 transition-all hover:gap-5"
                 href="/"
             >
@@ -24,7 +26,7 @@ export default function NotFound() {
                     <path d="M19 12H5"></path>
                 </svg>
                 Kembali
-            </a>
+            </Link>
         </div>
     );
 }
