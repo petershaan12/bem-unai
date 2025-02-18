@@ -6,7 +6,7 @@ import { Footer } from "@/components/footer";
 import { getUser } from "./lib/auth";
 import { getAllOrganisasi } from "./lib/organisasi";
 import { ToastContainer } from "react-toastify";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +25,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      <GoogleTagManager gtmId="GTM-MLCPHH9P" />
       <body
         className={`${inter.className} antialiased bg-primary text-white`} // Apply Inter font
       >
