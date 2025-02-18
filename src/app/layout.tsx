@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer";
 import { getUser } from "./lib/auth";
 import { getAllOrganisasi } from "./lib/organisasi";
 import { ToastContainer } from "react-toastify";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +33,7 @@ export default async function RootLayout({
         <ToastContainer />
         <Footer />
       </body>
+      <GoogleAnalytics gaId="G-12Q5YEBG60" />
     </html>
   );
 }
