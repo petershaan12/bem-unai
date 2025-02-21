@@ -1,7 +1,6 @@
 "use server";
 
 import { z } from "zod";
-import { redirect } from "next/navigation";
 import prisma from "@/app/lib/prisma";
 
 const contactSchema = z.object({

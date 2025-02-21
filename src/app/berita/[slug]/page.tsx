@@ -4,7 +4,7 @@ import IncrementView from "./IncrementView";
 import Image from "next/image";
 
 
-export async function generateMetaData({ params }: { params: Promise<{ slug: string}>}) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string}>}) {
     const { slug } = await params;
     const data = await getOnePost(slug);
 
