@@ -4,6 +4,49 @@ import IncrementView from "./IncrementView";
 import Image from "next/image";
 
 
+export async function generateMetaData({ params }: { params: Promise<{ slug: string}>}) {
+    const { slug } = await params;
+    const data = await getOnePost(slug);
+
+    if(!data) {
+        return {
+            title: "Berita tidak ditemukan",
+            description: "Berita tidak ditemukan",
+        };
+    }
+
+    const ogSearchParams = new URLSearchParams();
+    ogSearchParams.append("title", data.title);
+
+    return {
+        title: data.title,
+        description: parse(data.content),
+        authors: data.organisasi.title,
+        openGraph: {
+          title: data.title,
+          description: parse(data.content),
+          type: "article",
+          url: data.slug,
+          images: [
+            {
+              url: `/api/og?${ogSearchParams.toString()}`,
+              width: 1200,
+              height: 630,
+              alt: data.title,
+            },
+          ],
+        },
+        twitter: {
+          card: "summary_large_image",
+          title: data.title,
+          description: parse(data.content),
+          images: [`/api/og?${ogSearchParams.toString()}`],
+        },
+      };
+
+}
+
+
 export default async function Page({ params }: { params: Promise<{ slug: string}>}) {
     const { slug } = await params;
     const data = await getOnePost(slug);

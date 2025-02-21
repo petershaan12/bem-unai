@@ -31,7 +31,7 @@ export default function NavbarMobile({ user, dataBem, isMobileMenuOpen, setIsMob
     return (
         <div
             className={`md:hidden ${isMobileMenuOpen ? "block" : "hidden"
-                } absolute top-12 left-0 w-full h-screen bg-primary p-4 z-10 overflow-auto`}
+                } absolute top-12 left-0 w-full h-screen bg-primary p-4 z-99 overflow-auto`}
         >
             <ul className="menu menu-vertical gap-6">
                 {dataBem && (
@@ -85,6 +85,9 @@ export default function NavbarMobile({ user, dataBem, isMobileMenuOpen, setIsMob
                 </li>
                 <li className={pathname === "/berita" ? "text-secondary" : ""}>
                     <Link href="/berita" onClick={handleClick}>Informasi</Link>
+                </li>
+                <li className={pathname === "/contact" ? "text-secondary" : ""}>
+                    <Link href="/contact" onClick={handleClick}>Kontak</Link>
                 </li>
                 {user && (
                     <>

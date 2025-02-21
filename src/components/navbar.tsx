@@ -140,6 +140,9 @@ export function Navbar({ user, dataBem }: NavbarProps) {
           <li className={pathname === "/berita" ? "text-secondary" : ""}>
             <Link href="/berita">Informasi</Link>
           </li>
+          <li className={pathname === "/contact" ? "text-secondary" : ""}>
+            <Link href="/contact">Kontak</Link>
+          </li>
           {user && (
             <>
               <li className={pathname === "/kelola-pemerintahan" ? "text-secondary" : ""}>
