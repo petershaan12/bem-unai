@@ -14,7 +14,7 @@ const getAllPortal = async () => {
     try {
         const portal = await prisma.portal.findMany({
             orderBy: {
-                createdAt: "asc",
+                createdAt: "desc",
             },
         });
         return portal;
