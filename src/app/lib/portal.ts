@@ -3,6 +3,7 @@
 import { z } from "zod";
 import prisma from "./prisma";
 import { revalidatePath } from "next/cache";
+import { getSession } from "./session";
 
 const portalSchema = z.object({
     title: z.string().min(3, { message: "Nama harus lebih dari 3 karakter" }).trim(),
@@ -38,6 +39,13 @@ const getOnePortal = async (id: string) => {
 }
 
 const deletePortal = async (id: string) => {
+
+    const session = await getSession();
+    if (!session || !session.userId) {
+        return null;
+    }
+
+    
     try {
         await prisma.portal.delete({
             where: {
@@ -53,7 +61,14 @@ const deletePortal = async (id: string) => {
 
 const savePortal = async (prevState: any, formData: FormData) => {
     const result = portalSchema.safeParse(Object.fromEntries(formData));
-    if(!result.success) {
+
+    const session = await getSession();
+    if (!session || !session.userId) {
+        return null;
+    }
+
+
+    if (!result.success) {
         const errorMessages = result.error.flatten().fieldErrors;
         const consolidatedErrorMessage = Object.values(errorMessages)
             .flat()
@@ -63,18 +78,18 @@ const savePortal = async (prevState: any, formData: FormData) => {
                 message: consolidatedErrorMessage,
             },
             data: {
-                
+
                 title: formData.get("title") as string,
                 link: formData.get("link") as string,
             },
         };
     }
 
-    const { title, link} = result.data;
+    const { title, link } = result.data;
     const id = formData.get("id") as string;
 
     //link harus https
-    if(!link.startsWith("https://")) {
+    if (!link.startsWith("https://")) {
         return {
             errors: {
                 message: "Link harus diawali dengan https://",
@@ -87,33 +102,33 @@ const savePortal = async (prevState: any, formData: FormData) => {
     }
 
     try {
-        if(id) {
+        if (id) {
             await prisma.portal.update({
                 where: {
                     id: id,
                 },
                 data: {
-                  title,
+                    title,
                     link,
                 },
             });
         } else {
             await prisma.portal.create({
                 data: {
-                  title,
-                  link,
+                    title,
+                    link,
                 },
-          });
+            });
         }
-      
-       revalidatePath("/kelola-portal");
 
-       return {
-              success: {
+        revalidatePath("/kelola-portal");
+
+        return {
+            success: {
                 message: "Portal berhasil disimpan",
                 redirect: "/kelola-portal",
-              },
-       }
+            },
+        }
     } catch (error) {
         console.error("Error creating portal:", error);
         return {

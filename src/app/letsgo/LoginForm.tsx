@@ -11,14 +11,14 @@ export function LoginForm() {
                 <label className="label">
                     <span className="text-base label-text">Email</span>
                 </label>
-                <input type="email" id="email" name="email" placeholder="Email Address" className="w-full input input-bordered input-secondary text-primary" />
+                <input type="email" id="email" name="email" placeholder="Email Address" className="text-sm w-full input bg-secondary/5 text-white focus:outline-offset-0 focus:outline-secondary/50 focus:border-none"  />
             </div>
 
             <div>
                 <label className="label">
                     <span className="text-base label-text">Password</span>
                 </label>
-                <input id="password" type="password" name="password" placeholder="Enter Password" className="w-full input input-bordered input-secondary text-primary" />
+                <input id="password" type="password" name="password" placeholder="Enter Password" className="text-sm w-full input bg-secondary/5 text-white focus:outline-offset-0 focus:outline-secondary/50 focus:border-none"  />
             </div>
 
             <div className="flex justify-center">

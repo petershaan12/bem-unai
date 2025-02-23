@@ -3,6 +3,7 @@
 import { z } from "zod";
 import prisma from "./prisma";
 import { revalidatePath } from "next/cache";
+import { getSession } from "./session";
 
 const organisasiSchema = z.object({
     title: z.string().min(3, { message: "Nama harus lebih dari 3 karakter" }).trim(),
@@ -86,6 +87,13 @@ const getChildOrganisasi = async (id: string) => {
 
 const saveOrganisasi = async (prevState: any, formData: FormData) => {
     const result = organisasiSchema.safeParse(Object.fromEntries(formData));
+
+    const session = await getSession();
+    if (!session || !session.userId) {
+        return null;
+    }
+
+
     if (!result.success) {
         const errorMessages = result.error.flatten().fieldErrors;
         const consolidatedErrorMessage = Object.values(errorMessages)
@@ -137,7 +145,7 @@ const saveOrganisasi = async (prevState: any, formData: FormData) => {
                     abbreviation,
                     type,
                     description,
-                familyId: familyId || null,
+                    familyId: familyId || null,
                     image: image,
                 },
             });
@@ -164,10 +172,15 @@ const saveOrganisasi = async (prevState: any, formData: FormData) => {
                 familyId,
             },
         };
-    } 
+    }
 }
 
 const deleteOrganisasi = async (id: string) => {
+    const session = await getSession();
+    if (!session || !session.userId) {
+        return null;
+    }
+
     try {
         await prisma.organisasi.delete({
             where: {

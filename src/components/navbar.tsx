@@ -154,6 +154,9 @@ export function Navbar({ user, dataBem }: NavbarProps) {
               <li className={pathname === "/kelola-informasi" ? "text-secondary" : ""}>
                 <Link href="/kelola-informasi">Kelola Informasi</Link>
               </li>
+              <li className={pathname === "/kelola-kontak" ? "text-secondary" : ""}>
+                <Link href="/kelola-kontak">Kelola Kontak</Link>
+              </li>
               <li className={pathname === "/profile" ? "text-secondary" : ""}>
                 <Link href="/profile" className="flex items-center gap-4">
                   <div className="avatar placeholder">

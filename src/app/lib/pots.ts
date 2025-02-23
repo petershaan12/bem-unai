@@ -91,7 +91,6 @@ const postSchema = z.object({
 });
 
 const upsertPost = async (formData: FormData, postId?: string) => {
-    console.log("formData", formData);
     const result = postSchema.safeParse(Object.fromEntries(formData));
 
     const session = await getSession();
@@ -177,6 +176,12 @@ const upsertPost = async (formData: FormData, postId?: string) => {
 };
 
 const deletePost = async (id: string) => {
+    const session = await getSession();
+    if (!session || !session.userId) {
+        return null;
+    }
+
+
     try {
         await prisma.post.delete({
             where: {
