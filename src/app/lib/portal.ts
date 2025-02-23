@@ -4,6 +4,7 @@ import { z } from "zod";
 import prisma from "./prisma";
 import { revalidatePath } from "next/cache";
 import { getSession } from "./session";
+import { redirect } from "next/navigation";
 
 const portalSchema = z.object({
     title: z.string().min(3, { message: "Nama harus lebih dari 3 karakter" }).trim(),
@@ -42,10 +43,10 @@ const deletePortal = async (id: string) => {
 
     const session = await getSession();
     if (!session || !session.userId) {
-        return null;
+        return redirect("/letsgo");
     }
 
-    
+
     try {
         await prisma.portal.delete({
             where: {

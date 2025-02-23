@@ -14,6 +14,7 @@ const protectedRoutes = [
     "/kelola-portal/create",
     "/kelola-portal/edit",
     "/profile",
+    "/kelola-kontak",
 ];
 
 export default async function middleware(req: NextRequest) {

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import prisma from "./prisma";
 import { getSession } from "./session";
+import { redirect } from "next/navigation";
 
 const getAllKontak = async () => {
     const kontak = await prisma.contact.findMany({
@@ -16,7 +17,7 @@ const getAllKontak = async () => {
 const deleteKontak = async (id: string) => {
     const session = await getSession();
     if (!session || !session.userId) {
-        return null;
+       return redirect("/letsgo");
     }
     try {
         await prisma.contact.delete({

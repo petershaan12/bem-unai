@@ -5,6 +5,7 @@ import prisma from "./prisma";
 import { getSession } from "./session";
 import { revalidatePath } from "next/cache";
 import { put } from "@vercel/blob";
+import { redirect } from "next/navigation";
 
 const getAllPosts = async () => {
     const posts = await prisma.post.findMany({
@@ -95,7 +96,7 @@ const upsertPost = async (formData: FormData, postId?: string) => {
 
     const session = await getSession();
     if (!session || !session.userId) {
-        return null;
+        return redirect("/letsgo");
     }
 
     if (!result.success) {
@@ -124,7 +125,7 @@ const upsertPost = async (formData: FormData, postId?: string) => {
         if (image) {
             const imageFile = formData.get('image') as File;
             const blob = await put(imageFile.name, imageFile, {
-            access: 'public',
+                access: 'public',
             });
             imgUrl = blob.url;
         }
@@ -178,10 +179,8 @@ const upsertPost = async (formData: FormData, postId?: string) => {
 const deletePost = async (id: string) => {
     const session = await getSession();
     if (!session || !session.userId) {
-        return null;
+       return redirect("/letsgo");
     }
-
-
     try {
         await prisma.post.delete({
             where: {
@@ -196,4 +195,4 @@ const deletePost = async (id: string) => {
 }
 
 
-export { getAllPosts, getOnePost, upsertPost, incrementViewCount, getOnePostById, deletePost  };
+export { getAllPosts, getOnePost, upsertPost, incrementViewCount, getOnePostById, deletePost };

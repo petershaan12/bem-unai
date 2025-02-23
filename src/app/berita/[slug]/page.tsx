@@ -8,7 +8,8 @@ import Share from "@/components/share";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const data = await getOnePost(slug);
+    const decodedSlug = decodeURIComponent(slug);
+    const data = await getOnePost(decodedSlug);
 
     if (!data) {
         return {
@@ -54,9 +55,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const data = await getOnePost(slug);
+    const decodedSlug = decodeURIComponent(slug);
+    const data = await getOnePost(decodedSlug);
 
-    if (!data) {
+    if (!data){
         return <h1>Berita tidak ditemukan</h1>;
     }
 
@@ -93,7 +95,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                     height={208}
                 />
             )}
-            <div className="text-justify my-4 p-4">{parse(data.content)}</div>
+            <div className="text-justify my-4">{parse(data.content)}</div>
 
 <hr className="my-8" />
             <div>
