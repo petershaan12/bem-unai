@@ -13,6 +13,21 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "BEM UNAI",
   description: "Badan Eksekutif Mahasiswa Universitas Advent Indonesia",
+  authors: [{ name: "BEM UNAI" }],
+  openGraph: {
+    title: "BEM UNAI",
+    description: "Badan Eksekutif Mahasiswa Universitas Advent Indonesia",
+    type: "website",
+    url: "/",
+    images: [
+      {
+        url: "/api/og?title=BEM%20UNAI",
+        width: 1200,
+        height: 630,
+        alt: "BEM UNAI",
+      },
+    ],
+  }
 };
 
 export default async function RootLayout({

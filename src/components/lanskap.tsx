@@ -34,7 +34,7 @@ export function Lanskap({dataBem}: any) {
       </p>
 
       {/* Marquee Container */}
-      <div className="max-w-full md:max-w-7xl mx-auto relative mt-12">
+      <div className="max-w-full lg:max-w-auto mx-auto relative mt-12">
         <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-primary z-10"></div>
         <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-primary z-10"></div>
         <div className="relative flex overflow-x-hidden">

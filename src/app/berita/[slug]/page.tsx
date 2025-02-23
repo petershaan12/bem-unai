@@ -2,13 +2,15 @@ import { getOnePost } from "@/app/lib/pots";
 import parse from 'html-react-parser';
 import IncrementView from "./IncrementView";
 import Image from "next/image";
+import Share from "@/components/share";
 
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string}>}) {
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const data = await getOnePost(slug);
 
-    if(!data) {
+    if (!data) {
         return {
             title: "Berita tidak ditemukan",
             description: "Berita tidak ditemukan",
@@ -18,36 +20,39 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const ogSearchParams = new URLSearchParams();
     ogSearchParams.append("title", data.title);
 
+    const plainTextContent = data.content.replace(/<[^>]+>/g, '');
+    const shortDescription = plainTextContent.substring(0, 160) + '...';
+
     return {
         title: data.title,
-        description: parse(data.content),
+        description: shortDescription,
         authors: data.organisasi.title,
         openGraph: {
-          title: data.title,
-          description: parse(data.content),
-          type: "article",
-          url: data.slug,
-          images: [
-            {
-              url: `/api/og?${ogSearchParams.toString()}`,
-              width: 1200,
-              height: 630,
-              alt: data.title,
-            },
-          ],
+            title: data.title,
+            description: shortDescription,
+            type: "article",
+            url: data.slug,
+            images: [
+                {
+                    url: `/api/og?${ogSearchParams.toString()}`,
+                    width: 1200,
+                    height: 630,
+                    alt: data.title,
+                },
+            ],
         },
         twitter: {
-          card: "summary_large_image",
-          title: data.title,
-          description: parse(data.content),
-          images: [`/api/og?${ogSearchParams.toString()}`],
+            card: "summary_large_image",
+            title: data.title,
+            description: parse(data.content),
+            images: [`/api/og?${ogSearchParams.toString()}`],
         },
-      };
+    };
 
 }
 
 
-export default async function Page({ params }: { params: Promise<{ slug: string}>}) {
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const data = await getOnePost(slug);
 
@@ -89,6 +94,12 @@ export default async function Page({ params }: { params: Promise<{ slug: string}
                 />
             )}
             <div className="text-justify my-4 p-4">{parse(data.content)}</div>
+
+<hr className="my-8" />
+            <div>
+                <h2 className="text-lg  mb-4">Bagikan berita ini</h2>
+                <Share slug={data.slug} title={data.title} />
+            </div>
 
         </div>
     );
