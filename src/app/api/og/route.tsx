@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
         <div
           tw="flex relative flex-col p-28 w-full h-full items-start text-white "
           style={{
-            backgroundImage: `url(${process.env.NEXT_PUBLIC_APP_URL}/og.png)`,
+            backgroundImage: `url(${process.env.NEXT_PUBLIC_APP_URL}/OG.png)`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
