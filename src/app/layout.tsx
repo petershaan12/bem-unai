@@ -11,7 +11,7 @@ import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "BEM UNAI",
+  title: "Badan Eksekutif Mahasiswa Univeristas Advent Indonesia",
   description: "Badan Eksekutif Mahasiswa Universitas Advent Indonesia",
   authors: [{ name: "BEM UNAI" }],
   openGraph: {
