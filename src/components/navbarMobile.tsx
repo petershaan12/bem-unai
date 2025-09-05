@@ -126,11 +126,15 @@ export default function NavbarMobile({
         </li>
         {isCandidateOpen && (
           <li className={pathname === "/vote" ? "text-secondary" : ""}>
-            <Link href="/vote">Vote</Link>
+            <Link href="/vote" onClick={handleClick}>
+              Vote
+            </Link>
           </li>
         )}
         <li className={pathname === "/result-vote" ? "text-secondary" : ""}>
-          <Link href="/result-vote">Vote Result</Link>
+          <Link href="/result-vote" onClick={handleClick}>
+            Vote Result
+          </Link>
         </li>
         {user && (
           <>
