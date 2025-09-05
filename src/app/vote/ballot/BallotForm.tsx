@@ -35,17 +35,8 @@ export default function BallotForm({ candidates }: { candidates: any[] }) {
         setTimeout(() => {
           router.push("/vote/thankyou");
         }, 1500);
-      } else {
-        // Handle case where res is returned but not ok
-        toast.error("Terjadi kesalahan saat memproses vote.", {
-          position: "top-right",
-          autoClose: 5000,
-          theme: "dark",
-        });
       }
     } catch (err: any) {
-      console.error("Vote error:", err);
-
       // Handle different types of errors in production
       let errorMessage = "Terjadi kesalahan saat vote.";
 
