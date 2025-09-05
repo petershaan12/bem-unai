@@ -37,33 +37,8 @@ export default function BallotForm({ candidates }: { candidates: any[] }) {
         }, 1500);
       }
     } catch (err: any) {
-      // Handle different types of errors in production
-      let errorMessage = "Terjadi kesalahan saat vote.";
-
-      if (err?.message) {
-        // Check for specific error messages
-        if (err.message.includes("Unauthorized")) {
-          errorMessage = "Anda tidak memiliki akses untuk vote.";
-        } else if (err.message.includes("Voting is closed")) {
-          errorMessage = "Periode voting telah berakhir.";
-        } else if (err.message.includes("Candidate not found")) {
-          errorMessage = "Kandidat tidak ditemukan.";
-        } else if (
-          err.message.includes("Tidak Layak Vote") ||
-          err.message.includes("Sudah Memilih")
-        ) {
-          errorMessage = "Anda tidak layak vote atau sudah memilih sebelumnya.";
-        } else if (
-          err.message.includes("Network") ||
-          err.message.includes("fetch")
-        ) {
-          errorMessage = "Masalah koneksi. Silakan coba lagi.";
-        } else if (err.message.includes("digest")) {
-          // Production error dengan digest
-          errorMessage =
-            "Terjadi kesalahan server. Silakan coba lagi atau hubungi admin.";
-        }
-      }
+      let errorMessage =
+        "Terjadi kesalahan vote, kamu sudah vote sebelumnya. atau akun kamu tidak layak vote. Silahkan hubungi admin.";
 
       toast.error(errorMessage, {
         position: "top-right",
