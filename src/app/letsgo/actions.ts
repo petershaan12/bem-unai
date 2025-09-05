@@ -3,7 +3,8 @@
 import { z } from "zod";
 import { createSession } from "@/app/lib/session";
 import { redirect } from "next/navigation";
-import prisma  from "@/app/lib/prisma";
+import prisma from "@/app/lib/prisma";
+import bcrypt from "bcryptjs"; // You'll need to install this: npm install bcryptjs @types/bcryptjs
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }).trim(),
@@ -27,7 +28,7 @@ export async function login(prevState: any, formData: FormData) {
 
   const { email, password } = result.data;
 
-  const user  = await prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: {
       email: email,
     },
@@ -36,15 +37,20 @@ export async function login(prevState: any, formData: FormData) {
   if (!user) {
     return {
       errors: {
-        message: ["Email not found"],
+        message: "Invalid email or password",
       },
     };
   }
 
-  const passwordMatch = user.password as string === password;
+  // Use bcrypt to compare passwords securely
+  const passwordMatch = await bcrypt.compare(password, user.password);
 
   if (!passwordMatch) {
-    throw new Error("Incorrect password");
+    return {
+      errors: {
+        message: "Invalid email or password",
+      },
+    };
   }
 
   await createSession(user.id);

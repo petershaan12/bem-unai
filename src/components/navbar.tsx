@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import NavbarMobile from "./navbarMobile";
@@ -8,23 +8,60 @@ import Image from "next/image";
 interface NavbarProps {
   user: any | null;
   dataBem: any[];
+  isCandidateOpen: boolean;
 }
 
-export function Navbar({ user, dataBem }: NavbarProps) {
+const kelola = [
+  { name: "Kelola Pemerintahan", href: "/kelola-pemerintahan" },
+  { name: "Kelola Portal", href: "/kelola-portal" },
+  { name: "Kelola Informasi", href: "/kelola-informasi" },
+  { name: "Kelola Kontak", href: "/kelola-kontak" },
+  { name: "Kelola Kandidat", href: "/kelola-kandidat" },
+  { name: "Kelola Voting", href: "/kelola-voting" },
+];
+
+export function Navbar({ user, dataBem, isCandidateOpen }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleClick = () => {
-    const dropdowns = document.querySelector(".dropdown");
-    dropdowns?.removeAttribute("open");
+    const dropdowns = document.querySelectorAll(".dropdown");
+    dropdowns.forEach((dropdown) => dropdown.removeAttribute("open"));
+  };
+
+  const handleDropdownToggle = (dropdownId: string) => {
+    const allDropdowns = document.querySelectorAll(".dropdown");
+    const targetDropdown = document.getElementById(dropdownId);
+
+    // Close all other dropdowns
+    allDropdowns.forEach((dropdown) => {
+      if (dropdown.id !== dropdownId) {
+        dropdown.removeAttribute("open");
+      }
+    });
+
+    // Toggle the target dropdown
+    if (targetDropdown?.hasAttribute("open")) {
+      targetDropdown.removeAttribute("open");
+    } else {
+      targetDropdown?.setAttribute("open", "");
+    }
   };
 
   const pathname = usePathname();
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
-      const dropdowns = document.querySelector(".dropdown");
-      if (dropdowns && !dropdowns.contains(event.target as Node)) {
-        dropdowns.removeAttribute("open");
+      const dropdowns = document.querySelectorAll(".dropdown");
+      let isInsideDropdown = false;
+
+      dropdowns.forEach((dropdown) => {
+        if (dropdown.contains(event.target as Node)) {
+          isInsideDropdown = true;
+        }
+      });
+
+      if (!isInsideDropdown) {
+        dropdowns.forEach((dropdown) => dropdown.removeAttribute("open"));
       }
     };
 
@@ -38,7 +75,10 @@ export function Navbar({ user, dataBem }: NavbarProps) {
   return (
     <div className="navbar bg-primary px-5 md:px-20 fixed top-0 z-20 md:h-20 shadow-lg">
       <div className="flex-1">
-        <Link href="/" className="font-semibold text-2xl flex items-center gap-5">
+        <Link
+          href="/"
+          className="font-semibold text-2xl flex items-center gap-5"
+        >
           <Image
             src="/bem-logo.svg"
             alt="Logo"
@@ -86,15 +126,30 @@ export function Navbar({ user, dataBem }: NavbarProps) {
         </button>
       </div>
       <div
-        className={`flex-none hidden md:block ${isMobileMenuOpen ? "block" : "hidden"
-          }  `}
+        className={`flex-none hidden md:block ${
+          isMobileMenuOpen ? "block" : "hidden"
+        }  `}
       >
         <ul className="menu menu-horizontal px-1 items-center">
           {dataBem && (
             <li>
               <details id="dropdown" className="dropdown">
-                <summary className={pathname.startsWith("/pemerintahan") ? "text-secondary" : ""}>Pemerintahan</summary>
-                <ul className={`menu menu-horizontal dropdown-content bg-primary rounded-box min-w-max border border-secondary/50 ${user ? '' : 'right-0'} `}>
+                <summary
+                  className={
+                    pathname.startsWith("/pemerintahan") ? "text-secondary" : ""
+                  }
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleDropdownToggle("dropdown");
+                  }}
+                >
+                  Pemerintahan
+                </summary>
+                <ul
+                  className={`menu menu-horizontal dropdown-content bg-primary rounded-box min-w-max border border-secondary/50 ${
+                    user ? "" : "right-0"
+                  } `}
+                >
                   {Array.from(new Set(dataBem.map((data) => data.type))).map(
                     (type) => {
                       const item = dataBem.find((data) => data.type === type);
@@ -104,7 +159,13 @@ export function Navbar({ user, dataBem }: NavbarProps) {
                       return (
                         <li key={type} className="flex items-center">
                           <div className="flex items-center gap-4">
-                            <Image src={imageSrc} alt={type} className="w-7 h-7" width={20} height={20}/>
+                            <Image
+                              src={imageSrc}
+                              alt={type}
+                              className="w-7 h-7"
+                              width={20}
+                              height={20}
+                            />
                             <span className="text-sm text-white">
                               {item ? item.type : "Tidak ada data"}
                             </span>
@@ -115,7 +176,12 @@ export function Navbar({ user, dataBem }: NavbarProps) {
                               .map((data) => (
                                 <li
                                   key={data.abbreviation}
-                                  className={`hover:bg-secondary/50 hover:rounded-lg ${pathname === `/pemerintahan/${data.abbreviation}` ? "text-secondary hover:text-white" : ""}`}
+                                  className={`hover:bg-secondary/50 hover:rounded-lg ${
+                                    pathname ===
+                                    `/pemerintahan/${data.abbreviation}`
+                                      ? "text-secondary hover:text-white"
+                                      : ""
+                                  }`}
                                 >
                                   <Link
                                     href={`/pemerintahan/${data.abbreviation}`}
@@ -143,20 +209,56 @@ export function Navbar({ user, dataBem }: NavbarProps) {
           <li className={pathname === "/contact" ? "text-secondary" : ""}>
             <Link href="/contact">Kontak</Link>
           </li>
+          {isCandidateOpen && (
+            <li
+              className={pathname.startsWith("/vote") ? "text-secondary" : ""}
+            >
+              <Link href="/vote">Vote</Link>
+            </li>
+          )}
+
+          <li className={pathname === "/result-vote" ? "text-secondary" : ""}>
+            <Link href="/result-vote">Vote Result</Link>
+          </li>
+
           {user && (
             <>
-              <li className={pathname === "/kelola-pemerintahan" ? "text-secondary" : ""}>
-                <Link href="/kelola-pemerintahan">Kelola Pemerintahan</Link>
+              <li>
+                <details id="dropdown-kelola" className="dropdown">
+                  <summary
+                    className={`px-2 py-1 rounded-lg transition-colors duration-150 cursor-pointer ${
+                      pathname.startsWith("/kelola") ? "text-secondary" : ""
+                    }`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleDropdownToggle("dropdown-kelola");
+                    }}
+                  >
+                    Kelola
+                  </summary>
+                  <ul
+                    className={`menu dropdown-content bg-primary rounded-box min-w-max border border-secondary/50 ${
+                      user ? "" : "right-0"
+                    }`}
+                  >
+                    {kelola.map((item, index) => (
+                      <li
+                        key={index}
+                        className={`hover:bg-secondary/50 hover:rounded-lg transition-colors duration-150 ${
+                          pathname === item.href
+                            ? "text-secondary hover:text-white"
+                            : ""
+                        }`}
+                      >
+                        <Link href={item.href} onClick={handleClick}>
+                          {item.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
               </li>
-              <li className={pathname === "/kelola-portal" ? "text-secondary" : ""}>
-                <Link href="/kelola-portal">Kelola Portal</Link>
-              </li>
-              <li className={pathname === "/kelola-informasi" ? "text-secondary" : ""}>
-                <Link href="/kelola-informasi">Kelola Informasi</Link>
-              </li>
-              <li className={pathname === "/kelola-kontak" ? "text-secondary" : ""}>
-                <Link href="/kelola-kontak">Kelola Kontak</Link>
-              </li>
+
               <li className={pathname === "/profile" ? "text-secondary" : ""}>
                 <Link href="/profile" className="flex items-center gap-4">
                   <div className="avatar placeholder">
@@ -172,8 +274,13 @@ export function Navbar({ user, dataBem }: NavbarProps) {
         </ul>
       </div>
 
-      <NavbarMobile user={user} dataBem={dataBem} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
-
+      <NavbarMobile
+        user={user}
+        dataBem={dataBem}
+        isMobileMenuOpen={isMobileMenuOpen}
+        setIsMobileMenuOpen={setIsMobileMenuOpen}
+        isCandidateOpen={isCandidateOpen}
+      />
     </div>
   );
 }

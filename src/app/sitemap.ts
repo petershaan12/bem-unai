@@ -43,7 +43,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const allPosts = await getAllPosts();
 
   const beritaPosts = (allPosts || [])
-    .filter((post: any) => post.published && post.slug && typeof post.slug === "string" && post.slug.trim() !== "")
+    .filter(
+      (post: any) =>
+        post.published &&
+        post.slug &&
+        typeof post.slug === "string" &&
+        post.slug.trim() !== ""
+    )
     .map((post: any) => ({
       url: `${baseUrl}/berita/${encodeURIComponent(post.slug)}`,
       lastModified: post.date ? new Date(post.date) : new Date(),

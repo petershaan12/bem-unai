@@ -1,60 +1,60 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
-
 
 datasource db {
   provider = "mongodb"
   url      = env("MONGODB_URI")
 }
 
+// =====================
+// EXISTING CMS MODELS
+// =====================
+
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email     String   @unique
-  password  String
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  email        String   @unique
+  password     String
   photoProfile String?
-  name      String
-  posts     Post[]
+  name         String
+  posts        Post[]
 }
 
 model Post {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String
-  slug      String   @unique
-  content   String
-  bannerImage String?
-  organisasiId String @db.ObjectId
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  title        String
+  slug         String     @unique
+  content      String
+  bannerImage  String?
+  organisasiId String     @db.ObjectId
   organisasi   Organisasi @relation(fields: [organisasiId], references: [id])
-  date     DateTime 
-  views    Int      @default(0)
-  published Boolean  @default(false)
-  authorId  String   @db.ObjectId
-  author    User     @relation(fields: [authorId], references: [id])
+  date         DateTime
+  views        Int        @default(0)
+  published    Boolean    @default(false)
+  authorId     String     @db.ObjectId
+  author       User       @relation(fields: [authorId], references: [id])
 }
 
 model Organisasi {
-  id          String           @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
   abbreviation String
-  type        String
-  title       String
-  description String?
-  image       String?
-  familyId    String?          @db.ObjectId
-  family      Organisasi? @relation("FamilyRelation", fields: [familyId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  children    Organisasi[] @relation("FamilyRelation")
-  posts       Post[]
+  type         String
+  title        String
+  description  String?
+  image        String?
+  familyId     String?      @db.ObjectId
+  family       Organisasi?  @relation("FamilyRelation", fields: [familyId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children     Organisasi[] @relation("FamilyRelation")
+  posts        Post[]
 }
 
 model Portal {
@@ -62,14 +62,65 @@ model Portal {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   title     String
-  link     String
-} 
+  link      String
+}
 
 model contact {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  name     String
+  name      String
   email     String
   message   String
+}
+
+// =====================
+// E-VOTING MODELS (NEW)
+// =====================
+model candidate {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  photo     String?
+  votes     Int      @default(0)
+  url       String?
+  ballots   ballot[]
+}
+
+model voter {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  email      String    @unique // contoh validasi di app: harus @unai.edu
+  isEligible Boolean   @default(true)
+  hasVoted   Boolean   @default(false)
+  votedAt    DateTime?
+  ballots    ballot[]
+
+  @@index([hasVoted])
+}
+
+model ballot {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+
+  candidateId String    @db.ObjectId
+  candidate   candidate @relation(fields: [candidateId], references: [id])
+  voterId     String    @db.ObjectId
+  voter       voter     @relation(fields: [voterId], references: [id])
+  receiptHash String?
+
+  @@index([candidateId])
+}
+
+model election_config {
+  id                           String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt                    DateTime @default(now())
+  updatedAt                    DateTime @updatedAt
+  opensAt                      DateTime
+  closesAt                     DateTime
+  isActive                     Boolean  @default(true)
+  isShowResultsAfterVotingEnds Boolean  @default(true)
+  salt                         String?
 }

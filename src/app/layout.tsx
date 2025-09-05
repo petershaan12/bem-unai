@@ -7,6 +7,7 @@ import { getUser } from "./lib/auth";
 import { getAllOrganisasi } from "./lib/organisasi";
 import { ToastContainer } from "react-toastify";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import { getIsCandidateOpen } from "./lib/candidate";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
         alt: "BEM UNAI",
       },
     ],
-  }
+  },
 };
 
 export default async function RootLayout({
@@ -37,6 +38,7 @@ export default async function RootLayout({
 }>) {
   const user = await getUser();
   const dataBem = await getAllOrganisasi();
+  const dataConfig = await getIsCandidateOpen();
 
   return (
     <html lang="en">
@@ -44,7 +46,7 @@ export default async function RootLayout({
       <body
         className={`${inter.className} antialiased bg-primary text-white`} // Apply Inter font
       >
-        <Navbar user={user} dataBem={dataBem} />
+        <Navbar user={user} dataBem={dataBem} isCandidateOpen={dataConfig} />
         {children}
         <ToastContainer />
         <Footer />
