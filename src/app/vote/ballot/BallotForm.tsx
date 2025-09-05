@@ -26,14 +26,59 @@ export default function BallotForm({ candidates }: { candidates: any[] }) {
 
     try {
       const res = await submitVote(selectedCandidate.id);
-      if (res.ok) {
-        toast.success("Vote berhasil, terima kasih!");
+      if (res?.ok) {
+        toast.success("Vote berhasil! Email receipt telah dikirim.", {
+          position: "top-right",
+          autoClose: 3000,
+          theme: "dark",
+        });
         setTimeout(() => {
           router.push("/vote/thankyou");
-        }, 500);
+        }, 1500);
+      } else {
+        // Handle case where res is returned but not ok
+        toast.error("Terjadi kesalahan saat memproses vote.", {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "dark",
+        });
       }
-    } catch (err) {
-      toast.error("Gagal vote: " + (err as Error).message);
+    } catch (err: any) {
+      console.error("Vote error:", err);
+
+      // Handle different types of errors in production
+      let errorMessage = "Terjadi kesalahan saat vote.";
+
+      if (err?.message) {
+        // Check for specific error messages
+        if (err.message.includes("Unauthorized")) {
+          errorMessage = "Anda tidak memiliki akses untuk vote.";
+        } else if (err.message.includes("Voting is closed")) {
+          errorMessage = "Periode voting telah berakhir.";
+        } else if (err.message.includes("Candidate not found")) {
+          errorMessage = "Kandidat tidak ditemukan.";
+        } else if (
+          err.message.includes("Tidak Layak Vote") ||
+          err.message.includes("Sudah Memilih")
+        ) {
+          errorMessage = "Anda tidak layak vote atau sudah memilih sebelumnya.";
+        } else if (
+          err.message.includes("Network") ||
+          err.message.includes("fetch")
+        ) {
+          errorMessage = "Masalah koneksi. Silakan coba lagi.";
+        } else if (err.message.includes("digest")) {
+          // Production error dengan digest
+          errorMessage =
+            "Terjadi kesalahan server. Silakan coba lagi atau hubungi admin.";
+        }
+      }
+
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        theme: "dark",
+      });
     } finally {
       setLoading(null);
       setSelectedCandidate(null);
@@ -72,6 +117,9 @@ export default function BallotForm({ candidates }: { candidates: any[] }) {
               <p className="text-gray-600 text-sm mt-2">
                 Setelah memilih, Anda tidak dapat mengubah pilihan.
               </p>
+              <p className="text-blue-600 text-sm mt-2">
+                📧 Receipt akan dikirim ke email Anda.
+              </p>
             </div>
             <div className="flex gap-3 justify-center">
               <button
@@ -82,7 +130,8 @@ export default function BallotForm({ candidates }: { candidates: any[] }) {
               </button>
               <button
                 onClick={confirmVote}
-                className="px-6 py-2 bg-secondary text-black rounded-lg hover:bg-opacity-90 transition"
+                disabled={loading !== null}
+                className="px-6 py-2 bg-secondary text-black rounded-lg hover:bg-opacity-90 transition disabled:opacity-50"
               >
                 Ya, Saya Yakin
               </button>
@@ -97,7 +146,9 @@ export default function BallotForm({ candidates }: { candidates: any[] }) {
           <div className="bg-white rounded-lg p-6">
             <div className="flex items-center gap-3">
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-secondary"></div>
-              <p className="text-black">Memproses vote Anda...</p>
+              <p className="text-black">
+                Memproses vote dan mengirim receipt...
+              </p>
             </div>
           </div>
         </div>
