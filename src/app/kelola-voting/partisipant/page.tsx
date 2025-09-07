@@ -1,7 +1,8 @@
-import Delete from "./Delete";
 import { getAllPartisipants } from "@/app/lib/partisipant";
 import ToggleEligibility from "./ToggleEligibility";
 import RenderTable from "./RenderTable";
+import Reset from "./Reset";
+import Delete from "./Delete";
 
 export default async function page() {
   const allPartisipants = await getAllPartisipants();
@@ -57,6 +58,7 @@ export default async function page() {
                     {participant.hasVoted ? "Ya" : "Tidak"}
                   </td>
                   <td>
+                    <Reset id={participant.id} />
                     <Delete id={participant.id} />
                   </td>
                 </tr>
