@@ -1,8 +1,5 @@
 import { getAllPartisipants } from "@/app/lib/partisipant";
-import ToggleEligibility from "./ToggleEligibility";
 import RenderTable from "./RenderTable";
-import Reset from "./Reset";
-import Delete from "./Delete";
 
 export default async function page() {
   const allPartisipants = await getAllPartisipants();
@@ -17,65 +14,6 @@ export default async function page() {
       </p>
       {/* Render Table  Partisipan */}
       <RenderTable allPartisipants={allPartisipants} />
-      <section
-        id="participant-table"
-        className="mb-20 overflow-x-auto w-full md:w-auto"
-      >
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Email</th>
-              <th>Tanggal Vote</th>
-              <th>Layak Vote</th>
-              <th>Sudah Vote</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {allPartisipants.length === 0 ? (
-              <tr>
-                <td colSpan={3} className="text-center">
-                  Tidak ada data
-                </td>
-              </tr>
-            ) : (
-              allPartisipants.map((participant: any) => (
-                <tr key={participant.id}>
-                  <td className="font-bold">{participant.email}</td>
-                  <td className="font-bold">
-                    {participant.votedAt
-                      ? new Date(participant.votedAt).toLocaleString()
-                      : "-"}
-                  </td>
-                  <td className="font-bold">
-                    <ToggleEligibility
-                      voterId={participant.id}
-                      currentStatus={participant.isEligible}
-                      hasVoted={participant.hasVoted}
-                    />
-                  </td>
-                  <td className="font-bold">
-                    {participant.hasVoted ? "Ya" : "Tidak"}
-                  </td>
-                  <td>
-                    <Reset id={participant.id} />
-                    <Delete id={participant.id} />
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-          <tfoot>
-            <tr>
-              <th>Email</th>
-              <th>Tanggal Vote</th>
-              <th>Layak Vote</th>
-              <th>Sudah Vote</th>
-              <th>Aksi</th>
-            </tr>
-          </tfoot>
-        </table>
-      </section>
     </main>
   );
 }

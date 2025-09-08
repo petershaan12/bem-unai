@@ -12,12 +12,21 @@ export async function ensureVoter() {
   }
 
   // cek / buat voter
+  const id = email.split("@")[0];
+  let isEligible = false;
+
+  // Check if id starts with numbers (for student IDs)
+  if (/^\d+/.test(id)) {
+    const year = parseInt(id.substring(0, 2));
+    isEligible = year >= 22;
+  }
+
   await prisma.voter.upsert({
     where: { email },
     update: {}, // tidak usah update apa-apa
     create: {
       email,
-      isEligible: true,
+      isEligible,
       hasVoted: false,
     },
   });
