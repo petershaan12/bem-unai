@@ -2,6 +2,8 @@
 
 > Portal resmi Badan Eksekutif Mahasiswa Universitas Advent Indonesia
 
+![Screenshot](public/screenshot.png)
+
 ## Deskripsi
 
 Aplikasi web ini digunakan untuk publikasi berita, pengelolaan voting, manajemen organisasi, dan komunikasi antara mahasiswa dengan pengurus BEM UNAI.
@@ -40,6 +42,8 @@ Aplikasi web ini digunakan untuk publikasi berita, pengelolaan voting, manajemen
    ```
 5. Buka [http://localhost:3000](http://localhost:3000) di browser.
 
+6. Jalankan Prisma Studio dengan [http://localhost:5555](http://localhost:5555) di Browser
+
 ## Struktur Folder Penting
 
 - `src/app/` : Halaman & API utama
@@ -57,13 +61,9 @@ Kontribusi terbuka untuk pengembangan lebih lanjut. Silakan buat issue atau pull
 
 [Lihat Panduan Admin (PDF)](https://drive.google.com/file/d/19bJwAuDFPEBPaxcnXuxNwA0JBFQvWQme/view?usp=drive_link)
 
-<iframe src="https://drive.google.com/file/d/19bJwAuDFPEBPaxcnXuxNwA0JBFQvWQme/preview" width="100%" height="480"></iframe>
-
 ### 📄 Panduan User
 
 [Lihat Panduan User (PDF)](https://drive.google.com/file/d/1_89B5yn1izsi565-fOocYTMJFo_4w4Kk/view?usp=drive_link)
-
-<iframe src="https://drive.google.com/file/d/1_89B5yn1izsi565-fOocYTMJFo_4w4Kk/preview" width="100%" height="480"></iframe>
 
 ## Kontak
 
