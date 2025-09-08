@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portal BEM UNAI
 
-## Getting Started
+> Portal resmi Badan Eksekutif Mahasiswa Universitas Advent Indonesia
 
-First, run the development server:
+## Deskripsi
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Aplikasi web ini digunakan untuk publikasi berita, pengelolaan voting, manajemen organisasi, dan komunikasi antara mahasiswa dengan pengurus BEM UNAI.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Fitur Utama
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Manajemen berita & informasi
+- Voting online (pemilihan BEM)
+- Manajemen kandidat & partisipan
+- Portal kontak & pengaduan
+- Dashboard statistik
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Instalasi & Menjalankan Lokal
 
-## Learn More
+1. Clone repository:
+   ```bash
+   git clone https://github.com/petershaan12/bem-unai.git
+   cd bem-unai
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   # atau
+   yarn install
+   ```
+3. Copy file konfigurasi contoh jika ada:
+   ```bash
+   cp .env.example .env.local
+   # lalu sesuaikan variabel environment
+   ```
+4. Jalankan development server:
+   ```bash
+   npm run dev
+   # atau
+   yarn dev
+   ```
+5. Buka [http://localhost:3000](http://localhost:3000) di browser.
 
-To learn more about Next.js, take a look at the following resources:
+## Struktur Folder Penting
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `src/app/` : Halaman & API utama
+- `src/components/` : Komponen UI
+- `prisma/` : Skema database
+- `public/` : Asset publik (gambar, font, dsb)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Kontribusi
 
-## Deploy on Vercel
+Kontribusi terbuka untuk pengembangan lebih lanjut. Silakan buat issue atau pull request.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Panduan Penggunaan
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 📄 Panduan Admin
+
+[Lihat Panduan Admin (PDF)](https://drive.google.com/file/d/19bJwAuDFPEBPaxcnXuxNwA0JBFQvWQme/view?usp=drive_link)
+
+<iframe src="https://drive.google.com/file/d/19bJwAuDFPEBPaxcnXuxNwA0JBFQvWQme/preview" width="100%" height="480"></iframe>
+
+### 📄 Panduan User
+
+[Lihat Panduan User (PDF)](https://drive.google.com/file/d/1_89B5yn1izsi565-fOocYTMJFo_4w4Kk/view?usp=drive_link)
+
+<iframe src="https://drive.google.com/file/d/1_89B5yn1izsi565-fOocYTMJFo_4w4Kk/preview" width="100%" height="480"></iframe>
+
+## Kontak
+
+- Email: bem@unai.edu
+- Instagram: [@bem.unai](https://instagram.com/bem.unai)
+
+---
+
+Copyright © BEM UNAI
