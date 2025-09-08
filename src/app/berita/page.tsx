@@ -1,6 +1,28 @@
 import CardBerita from "@/components/cardBerita";
 import { getAllPosts } from "../lib/pots";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Berita & Informasi | BEM UNAI",
+  description:
+    "Dapatkan informasi terbaru seputar kegiatan mahasiswa UNAI melalui blog resmi kami. Temukan berita, artikel, dan pembaruan terkini di sini.",
+  keywords: ["Berita BEM UNAI", "Informasi Kegiatan Mahasiswa"],
+  openGraph: {
+    title: "Berita & Informasi",
+    description: "Badan Eksekutif Mahasiswa Universitas Advent Indonesia",
+    type: "website",
+    url: "/berita",
+    images: [
+      {
+        url: "/api/og?title=Berita%20%26%20Informasi%20%7C%20BEM%20UNAI",
+        width: 1200,
+        height: 630,
+        alt: "Berita & Informasi | BEM UNAI",
+      },
+    ],
+  },
+};
 
 export default async function page() {
   const allPosts = await getAllPosts();

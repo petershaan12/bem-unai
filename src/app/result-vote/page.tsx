@@ -1,6 +1,32 @@
 import { getVotingResults, getIsResultsVisible } from "@/app/lib/vote";
 import ResultChart from "./Chart";
 import Image from "next/image";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Hasil Pemungutan Suara | BEM UNAI",
+  description:
+    "Hasil real-time pemilihan Ketua & Wakil Ketua BEM UNAI. Dapatkan informasi terbaru seputar hasil pemungutan suara.",
+  keywords: [
+    "Hasil Voting BEM UNAI",
+    "Pemilihan Ketua BEM UNAI",
+    "Hasil Pemungutan Suara",
+  ],
+  openGraph: {
+    title: "Hasil Pemungutan Suara",
+    description: "Badan Eksekutif Mahasiswa Universitas Advent Indonesia",
+    type: "website",
+    url: "/result-vote",
+    images: [
+      {
+        url: "/api/og?title=Hasil%20Pemungutan%20Suara%20%7C%20BEM%20UNAI",
+        width: 1200,
+        height: 630,
+        alt: "Hasil Pemungutan Suara | BEM UNAI",
+      },
+    ],
+  },
+};
 
 export default async function page() {
   const isVisible = await getIsResultsVisible();

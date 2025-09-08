@@ -1,6 +1,28 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getAllPortal } from "../lib/portal";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Portal | BEM UNAI",
+  description:
+    "Akses portal resmi BEM UNAI untuk berbagai link dan informasi mahasiswa Universitas Advent Indonesia. Temukan tautan penting dan sumber daya terkini di sini.",
+  keywords: ["Portal BEM UNAI", "Links Mahasiswa UNAI"],
+  openGraph: {
+    title: "Portal",
+    description: "Badan Eksekutif Mahasiswa Universitas Advent Indonesia",
+    type: "website",
+    url: "/portal",
+    images: [
+      {
+        url: "/api/og?title=Portal%20%7C%20BEM%20UNAI",
+        width: 1200,
+        height: 630,
+        alt: "Portal | BEM UNAI",
+      },
+    ],
+  },
+};
 
 export default async function page() {
   const data = await getAllPortal();

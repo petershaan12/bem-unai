@@ -1,36 +1,69 @@
-import Link from 'next/link';
-import NotFound from '@/app/not-found';
-import Image from 'next/image';
-import { getChildOrganisasi, getFamilyOrganisasi, getOrganisasiByAbbreviation } from '@/app/lib/organisasi';
+import Link from "next/link";
+import NotFound from "@/app/not-found";
+import Image from "next/image";
+import {
+  getChildOrganisasi,
+  getFamilyOrganisasi,
+  getOrganisasiByAbbreviation,
+} from "@/app/lib/organisasi";
 
-export async function generateMetadata({ params }: { params: Promise<{ abbreviation: string }>}) {
-  const {abbreviation} = await params;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ abbreviation: string }>;
+}) {
+  const { abbreviation } = await params;
   const data = await getOrganisasiByAbbreviation(abbreviation);
 
   if (!data) {
     return {
-      title: 'Halaman tidak ditemukan',
-      description: 'Halaman yang Anda cari tidak ditemukan',
+      title: "Halaman tidak ditemukan",
+      description: "Halaman yang Anda cari tidak ditemukan",
     };
   }
 
   return {
     title: data.title,
     description: data.description,
+    keywords: [data.title, data.type, "BEM UNAI", "Pemerintahan Mahasiswa"],
+    openGraph: {
+      title: data.title,
+      description: data.description,
+      type: "website",
+      url: `/pemerintahan/${data.abbreviation}`,
+      images: [
+        {
+          url: `/api/og?title=${encodeURIComponent(
+            data.title
+          )}&type=${encodeURIComponent(data.type)}`,
+          width: 1200,
+          height: 630,
+          alt: data.title,
+        },
+      ],
+    },
   };
 }
 
-export default async function Page({ params }: { params: Promise<{ abbreviation: string }>}) {
-  const {abbreviation} = await params;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ abbreviation: string }>;
+}) {
+  const { abbreviation } = await params;
   const data = await getOrganisasiByAbbreviation(abbreviation);
-  const parent = data?.type === 'Kementrian';
+  const parent = data?.type === "Kementrian";
 
   if (!data) {
     return <NotFound />;
   }
 
-  const family = data.familyId ? await getFamilyOrganisasi(data.familyId) : parent ? await getChildOrganisasi(data.id) : null;
-  
+  const family = data.familyId
+    ? await getFamilyOrganisasi(data.familyId)
+    : parent
+    ? await getChildOrganisasi(data.id)
+    : null;
+
   return (
     <main className="mx-auto items-center text-white flex min-h-screen flex-col">
       <section className="relative flex h-screen w-full flex-col items-center justify-center overflow-hidden lg:h-full xl:h-[48rem]">
@@ -60,9 +93,7 @@ export default async function Page({ params }: { params: Promise<{ abbreviation:
       </section>
       <section className="md:px-16 py-24 grid md:grid-cols-2 gap-14">
         <div className="max-w-3xl w-full rounded-lg p-8">
-          <h2 className="text-4xl md:text-6xl font-bold mb-5">
-            {data.title}
-          </h2>
+          <h2 className="text-4xl md:text-6xl font-bold mb-5">{data.title}</h2>
           <p className="text-justify">{data.description}</p>
 
           {family && (
@@ -73,11 +104,11 @@ export default async function Page({ params }: { params: Promise<{ abbreviation:
 
               <div className="flex flex-col  flex-wrap md:flex-row">
                 {family?.map((familyItem, index) => (
-                    <Link
+                  <Link
                     href={`/pemerintahan/${familyItem.abbreviation}`}
                     key={index}
                     className="mt-4 flex items-center gap-4 hover:bg-gray-300/10 px-6 py-4 rounded-full"
-                    >
+                  >
                     <Image
                       src={`/icon/${familyItem.image}.svg`}
                       alt={familyItem.title}
@@ -86,7 +117,7 @@ export default async function Page({ params }: { params: Promise<{ abbreviation:
                       className="w-10 h-10"
                     />
                     <p className="text-sm font-light">{familyItem.title}</p>
-                    </Link>
+                  </Link>
                 ))}
               </div>
             </div>

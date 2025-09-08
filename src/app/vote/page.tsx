@@ -5,6 +5,32 @@ import { ensureVoter } from "./actions";
 import { getTimeLeft } from "../lib/election_config";
 import TimeLeft from "./TimeLeft";
 import Image from "next/image";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Evoting Calon Ketua & Wakil Ketua BEM UNAI",
+  description:
+    "Ayo voting sekarang untuk memilih Calon Ketua dan Wakil Ketua BEM UNAI.",
+  keywords: [
+    "Evoting BEM UNAI",
+    "Pemilihan Ketua BEM",
+    "Voting Mahasiswa UNAI",
+  ],
+  openGraph: {
+    title: "Evoting Calon Ketua & Wakil Ketua BEM UNAI",
+    description: "Badan Eksekutif Mahasiswa Universitas Advent Indonesia",
+    type: "website",
+    url: "/vote",
+    images: [
+      {
+        url: "/api/og?title=Evoting%20Calon%20Ketua%20%26%20Wakil%20Ketua%20BEM%20UNAI",
+        width: 1200,
+        height: 630,
+        alt: "Evoting Calon Ketua & Wakil Ketua BEM UNAI",
+      },
+    ],
+  },
+};
 
 export default async function page() {
   const session = await getServerSession();
