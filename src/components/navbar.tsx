@@ -210,16 +210,19 @@ export function Navbar({ user, dataBem, isCandidateOpen }: NavbarProps) {
             <Link href="/contact">Kontak</Link>
           </li>
           {isCandidateOpen && (
-            <li
-              className={pathname.startsWith("/vote") ? "text-secondary" : ""}
-            >
-              <Link href="/vote">Vote</Link>
-            </li>
+            <>
+              <li
+                className={pathname.startsWith("/vote") ? "text-secondary" : ""}
+              >
+                <Link href="/vote">Vote</Link>
+              </li>
+              <li
+                className={pathname === "/result-vote" ? "text-secondary" : ""}
+              >
+                <Link href="/result-vote">Vote Result</Link>
+              </li>
+            </>
           )}
-
-          <li className={pathname === "/result-vote" ? "text-secondary" : ""}>
-            <Link href="/result-vote">Vote Result</Link>
-          </li>
 
           {user && (
             <>
